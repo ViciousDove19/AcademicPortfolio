@@ -137,8 +137,9 @@ export default function Personal() {
       >
         <div className="flex-1">
           <p className="text-zinc-600 dark:text-zinc-400">
-            An IIT Madras graduate with a dual degree in Engineering Design with a specialisation in biomedical engineering. 
-            I'm passionate about multimedia, health-tech, statistics and behavioural science. Deeply interested in the intersection of AI and biology.
+            An IIT Madras graduate with a Dual Degree in Engineering Design, specializing in Biomedical Engineering. 
+            I’m passionate about the convergence of multimedia, health technology, statistics, and behavioral science, with a strong interest in exploring the intersection of artificial intelligence and biology. 
+
             
           </p>
         </div>

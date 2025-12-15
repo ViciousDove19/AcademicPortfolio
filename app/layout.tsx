@@ -5,6 +5,7 @@ import { Header } from './header'
 import { Footer } from './footer'
 import { ThemeProvider } from 'next-themes'
 import Script from 'next/script'
+import { Analytics } from "@vercel/analytics/next"
 
 
 export const viewport: Viewport = {

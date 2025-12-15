@@ -38,7 +38,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
     {/* Google Analytics 4 */}
     <Script
-      src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+      src={`https://www.googletagmanager.com/gtag/js?id=G-DDZ0V974RD`}
       strategy="afterInteractive"
     />
     <Script id="google-analytics" strategy="afterInteractive">
@@ -46,7 +46,7 @@ export default function RootLayout({
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+        gtag('config', 'G-DDZ0V974RD');
       `}
     </Script>
       <body

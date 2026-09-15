@@ -1,3 +1,6 @@
+import { Stamp } from '@/components/notebook/stamp'
+import { SketchUltrasoundCorpus } from '@/components/notebook/sketches'
+
 export const metadata = {
   title: 'OpenBUS: A foundation model for breast and multi-anatomy ultrasound',
   description:
@@ -9,24 +12,37 @@ export const metadata = {
 
 # OpenBUS
 
-*Status: In preparation, Medical Image Analysis*
+<Stamp>In preparation, Medical Image Analysis</Stamp>
+
+*A foundation model for breast and multi-anatomy ultrasound.*
+
+## In plain language
+
+Most ultrasound models are trained from scratch for one anatomy and one
+task. OpenBUS asks whether a single encoder, pretrained across many
+ultrasound sources and anatomies, can transfer instead of being rebuilt each
+time — and whether the masking scheme used during pretraining should be
+informed by how ultrasound images are actually formed, rather than applying
+generic, uniform random masking.
+
+<div className="not-prose my-6 max-w-xs">
+  <SketchUltrasoundCorpus />
+</div>
 
 ## Overview
 
-{/* TODO: 2-3 paragraph expansion of the motivation and problem statement */}
+A JEPA-style self-supervised model trained across a curated multi-source
+ultrasound corpus, using masking informed by ultrasound image formation
+rather than uniform random patches. The aim is a general-purpose ultrasound
+encoder that transfers across anatomies and acquisition settings.
 
 ## Method
 
-{/* TODO: architecture / approach details */}
+Pretraining follows a JEPA-style (joint-embedding predictive) objective
+rather than pixel-level reconstruction, with the masking scheme designed
+around ultrasound image formation instead of uniform random patches.
 
-## Data
+## Status & links
 
-{/* TODO: dataset(s) used, cohort/source description */}
-
-## Results
-
-{/* TODO: quantitative results once available; leave as "results pending" if still under review */}
-
-## Status & Links
-
-{/* TODO: link out to preprint/code once available, or state "under review" */}
+In preparation for submission to Medical Image Analysis. Dataset details,
+results, and links will be added here as the manuscript progresses.

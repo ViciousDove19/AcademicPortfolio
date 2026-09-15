@@ -7,18 +7,21 @@ import { NavMenu } from './nav-menu'
 
 export function Header() {
   return (
-    <header className="mb-8 flex items-center justify-between">
+    <header className="mb-10 flex items-center justify-between border-b border-rule pb-4">
       <div className="flex items-center gap-3">
         <Avatar />
         <div>
-          <Link href="/" className="font-medium text-black dark:text-white">
+          <Link
+            href="/"
+            className="font-serif text-lg font-semibold text-ink hover:text-accent"
+          >
             Chinmay Raut
           </Link>
           <TextEffect
             as="p"
             preset="fade"
             per="char"
-            className="text-zinc-600 dark:text-zinc-500"
+            className="text-sm text-ink-faint"
             delay={0.5}
           >
             {HERO_TITLE}

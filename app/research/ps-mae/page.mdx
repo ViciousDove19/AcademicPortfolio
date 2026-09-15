@@ -1,3 +1,6 @@
+import { Stamp } from '@/components/notebook/stamp'
+import { PeritumoralExplorer } from '@/components/experiments/peritumoral-explorer'
+
 export const metadata = {
   title: 'PS-MAE: Peritumoral masked autoencoding for axillary lymph node metastasis prediction',
   description:
@@ -9,24 +12,51 @@ export const metadata = {
 
 # PS-MAE
 
-*Status: Under review, IEEE JBHI*
+<Stamp>Under review, IEEE JBHI</Stamp>
+
+*Peritumoral masked autoencoding for axillary lymph node metastasis prediction.*
+
+## In plain language
+
+Whether breast cancer has spread to the axillary lymph nodes isn't only written
+in the tumour — it shows up in the tissue that surrounds it. Most models are
+trained to look at the lesion and crop the rest away. PS-MAE pretrains an
+encoder by masking that surrounding margin and asking it to reconstruct it,
+so the representation it learns can't ignore the margin the way a
+lesion-cropped model does.
+
+<PeritumoralExplorer />
 
 ## Overview
 
-{/* TODO: 2-3 paragraph expansion of the motivation and problem statement */}
+Nodal status in breast cancer is decided by tissue that sits outside the
+tumour, but most imaging models are trained to attend to the lesion itself.
+PS-MAE uses a Sobel-guided masking scheme over the peritumoral ring to force
+the encoder to represent the margin and surrounding tissue during
+pretraining, rather than treating it as background.
 
 ## Method
 
-{/* TODO: architecture / approach details */}
+PS-MAE is a masked autoencoder that replaces random patch masking with
+peritumoral ring masking and Sobel edge reconstruction targets. This encodes
+the clinical prior that the nodal metastasis signal lives in the tissue
+surrounding the lesion rather than within it, so the reconstruction
+objective directly targets that margin instead of arbitrary patches.
 
 ## Data
 
-{/* TODO: dataset(s) used, cohort/source description */}
+Evaluated under linear probing on an internal cohort, and on a
+class-imbalanced, out-of-distribution external cohort to test whether the
+learned representation holds up outside the training distribution.
 
 ## Results
 
-{/* TODO: quantitative results once available; leave as "results pending" if still under review */}
+Exceeds prior state-of-the-art under linear probing, and holds that margin
+on the class-imbalanced out-of-distribution external cohort. Full
+quantitative results are pending publication.
 
-## Status & Links
+## Status & links
 
-{/* TODO: link out to preprint/code once available, or state "under review" */}
+First-author manuscript under review at IEEE Journal of Biomedical and
+Health Informatics. Preprint and code links will be added here once
+available.

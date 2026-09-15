@@ -23,10 +23,10 @@ function NavLinkRow({ label, href }: { label: string; href: string }) {
       href={href}
       onClick={() => setIsOpen(false)}
       className={cn(
-        '-mx-2 block rounded-xl px-3 py-2.5 text-sm transition-colors',
+        '-mx-2 block rounded-lg px-3 py-2.5 text-sm transition-colors',
         isActive
-          ? 'bg-zinc-100 text-zinc-950 dark:bg-zinc-900/80 dark:text-zinc-50'
-          : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50',
+          ? 'bg-paper-alt text-accent'
+          : 'text-ink-soft hover:text-accent',
       )}
     >
       {label}
@@ -43,17 +43,17 @@ export function NavMenu() {
         duration: 0.3,
       }}
     >
-      <MorphingDialogTrigger className="flex h-9 w-9 items-center justify-center rounded-full text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50">
+      <MorphingDialogTrigger className="flex h-10 w-10 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-paper-alt hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
         <MenuIcon className="h-5 w-5" />
       </MorphingDialogTrigger>
       <MorphingDialogContainer>
-        <MorphingDialogContent className="relative w-72 rounded-2xl bg-white p-2 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950 dark:ring-zinc-800/50">
+        <MorphingDialogContent className="relative w-72 rounded-xl border border-rule bg-paper p-2">
           <nav className="flex flex-col py-1">
             {NAV_LINKS.map((link) => (
               <NavLinkRow key={link.href} label={link.label} href={link.href} />
             ))}
           </nav>
-          <MorphingDialogClose className="top-3 right-3 text-zinc-500 dark:text-zinc-400" />
+          <MorphingDialogClose className="top-3 right-3 text-ink-soft" />
         </MorphingDialogContent>
       </MorphingDialogContainer>
     </MorphingDialog>

@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Source_Serif_4, Caveat } from 'next/font/google'
 import { Header } from './header'
 import { Footer } from './footer'
 import { ThemeProvider } from 'next-themes'
@@ -11,11 +11,14 @@ import { Analytics } from "@vercel/analytics/next"
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ffffff',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f5efe1' },
+    { media: '(prefers-color-scheme: dark)', color: '#18150f' },
+  ],
 }
 
 export const metadata: Metadata = {
-  title: 'Chinmay Raut',
+  title: 'Chinmay Raut — Research notebook',
   description:  'Chinmay Raut - Researcher at IIT Madras. Exploring the intersection of AI and Biology.',
 };
 
@@ -26,6 +29,16 @@ const geist = Geist({
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+
+const sourceSerif = Source_Serif_4({
+  variable: '--font-source-serif',
+  subsets: ['latin'],
+})
+
+const caveat = Caveat({
+  variable: '--font-caveat',
   subsets: ['latin'],
 })
 
@@ -50,7 +63,7 @@ export default function RootLayout({
       `}
     </Script>
       <body
-        className={`${geist.variable} ${geistMono.variable} bg-white tracking-tight antialiased dark:bg-zinc-950`}
+        className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable} ${caveat.variable} bg-paper tracking-tight text-ink antialiased selection:bg-accent/20`}
       >
         <ThemeProvider
           enableSystem={true}
@@ -58,8 +71,8 @@ export default function RootLayout({
           storageKey="theme"
           defaultTheme="system"
         >
-          <div className="flex min-h-screen w-full flex-col font-[family-name:var(--font-inter-tight)]">
-            <div className="relative mx-auto w-full max-w-screen-sm flex-1 px-4 pt-20">
+          <div className="flex min-h-screen w-full flex-col">
+            <div className="relative mx-auto w-full max-w-2xl flex-1 border-x border-rule/70 px-5 pt-10 sm:px-8 sm:pt-14">
               <Header />
               {children}
               <Footer />

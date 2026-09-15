@@ -12,11 +12,14 @@ export default function BlogIndex() {
 
   return (
     <section>
-      <h1 className="mb-5 text-lg font-medium">Blog</h1>
+      <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-faint">
+        Notebook — margin writing
+      </p>
+      <h1 className="mt-2 mb-6 font-serif text-xl font-medium text-ink">Blog</h1>
       <div className="flex flex-col space-y-0">
         <AnimatedBackground
           enableHover
-          className="h-full w-full rounded-lg bg-zinc-100 dark:bg-zinc-900/80"
+          className="h-full w-full rounded-lg bg-paper-alt"
           transition={{
             type: 'spring',
             bounce: 0,
@@ -26,20 +29,14 @@ export default function BlogIndex() {
           {posts.map((post) => (
             <Link
               key={post.uid}
-              className="-mx-3 rounded-xl px-3 py-3"
+              className="-mx-3 rounded-lg px-3 py-3"
               href={post.link}
               data-id={post.uid}
             >
               <div className="flex flex-col space-y-1">
-                <h4 className="font-normal dark:text-zinc-100">
-                  {post.title}
-                </h4>
-                <p className="text-zinc-500 dark:text-zinc-400">
-                  {post.description}
-                </p>
-                <p className="text-xs text-zinc-400 dark:text-zinc-500">
-                  {post.date}
-                </p>
+                <h4 className="font-serif font-medium text-ink">{post.title}</h4>
+                <p className="text-sm text-ink-soft">{post.description}</p>
+                <p className="font-mono text-xs text-ink-faint">{post.date}</p>
               </div>
             </Link>
           ))}

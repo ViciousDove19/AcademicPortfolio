@@ -36,6 +36,7 @@ type ResearchProject = {
   name: string
   slug: string
   subtitle: string
+  question: string
   description: string
   status: string
   links?: ResearchLink[]
@@ -70,6 +71,7 @@ export const RESEARCH: ResearchProject[] = [
     slug: 'ps-mae',
     subtitle:
       'Peritumoral masked autoencoding for axillary lymph node metastasis prediction',
+    question: 'Does the evidence for spread sit inside the tumour, or in the tissue around it?',
     description:
       'Nodal status in breast cancer is decided by tissue that sits outside the tumour, but most imaging models are trained to attend to the lesion itself. PS-MAE uses a Sobel-guided masking scheme over the peritumoral ring to force the encoder to represent the margin and surrounding tissue during pretraining, rather than treating it as background.',
     status: 'Under review, IEEE JBHI',
@@ -79,6 +81,8 @@ export const RESEARCH: ResearchProject[] = [
     name: 'OpenBUS',
     slug: 'openbus',
     subtitle: 'A foundation model for breast and multi-anatomy ultrasound',
+    question:
+      'Can one encoder generalise across ultrasound anatomies instead of a bespoke model per task?',
     description:
       'A JEPA-style self-supervised model trained across a curated multi-source ultrasound corpus, using masking informed by ultrasound image formation rather than uniform random patches. The aim is a general-purpose ultrasound encoder that transfers across anatomies and acquisition settings.',
     status: 'In preparation, Medical Image Analysis',
@@ -88,6 +92,7 @@ export const RESEARCH: ResearchProject[] = [
     name: 'WAAU-Net',
     slug: 'waau-net',
     subtitle: 'Wavelet-domain adversarial training for cross-population segmentation',
+    question: 'Why does a segmentation model trained on one population fail on another?',
     description:
       'Breast ultrasound segmentation models degrade when moved between scanner populations. WAAU-Net applies adversarial alignment in the wavelet domain, targeting the frequency bands where acquisition differences concentrate, to improve robustness across populations.',
     status: 'Under review, IEEE JBHI',
@@ -97,6 +102,7 @@ export const RESEARCH: ResearchProject[] = [
     name: 'CHIMERA',
     slug: 'chimera',
     subtitle: 'Agentic multimodal decision support for prostate cancer — MICCAI 2026 Challenge',
+    question: 'Can an agent be evaluated on how it reasoned, not only on its final answer?',
     description:
       'An agentic pipeline that integrates histopathology, clinical, and molecular evidence to produce prostate cancer risk assessments, evaluated on both prediction accuracy and the fidelity of the reasoning trace it produces.',
     // TODO: update with final leaderboard rank once known.

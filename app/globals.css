@@ -16,8 +16,22 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--color-rule, currentColor);
   }
+}
+
+@theme {
+  --color-paper: #f5efe1;
+  --color-paper-alt: #ece2ca;
+  --color-paper-deep: #e4d8ba;
+  --color-ink: #211d15;
+  --color-ink-soft: #5b543f;
+  --color-ink-faint: #8d8467;
+  --color-rule: #d8cbaa;
+  --color-accent: #b23a1c;
+  --color-accent-soft: #e0946b;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-hand: var(--font-caveat), cursive;
 }
 
 :root {
@@ -29,4 +43,83 @@
   --sh-jsxliterals: #7aa2f7;
   --sh-property: #73daca;
   --sh-entity: #e0af68;
+}
+
+.dark {
+  --color-paper: #18150f;
+  --color-paper-alt: #211c13;
+  --color-paper-deep: #2a2318;
+  --color-ink: #efe8d6;
+  --color-ink-soft: #b6ac8e;
+  --color-ink-faint: #7c745c;
+  --color-rule: #3a3222;
+  --color-accent: #e2703c;
+  --color-accent-soft: #f0a874;
+}
+
+@layer base {
+  body {
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 27px,
+        var(--color-rule) 28px
+      );
+    background-attachment: local;
+  }
+  .dark body {
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 27px,
+        var(--color-rule) 28px
+      );
+  }
+}
+
+/* Fine measurement ticks used as section markers / rules */
+.measure-rule {
+  position: relative;
+  height: 1px;
+  background: var(--color-rule);
+}
+.measure-rule::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-ink-faint) 0,
+    var(--color-ink-faint) 1px,
+    transparent 1px,
+    transparent 24px
+  );
+  opacity: 0.5;
+}
+
+/* Margin annotation: small handwritten-feel note, used sparingly */
+.margin-note {
+  font-family: var(--font-hand);
+  color: var(--color-accent);
+  line-height: 1.15;
+}
+
+/* Paper card surface with a hairline border and faint edge shadow */
+.paper-panel {
+  background: var(--color-paper-alt);
+  border: 1px solid var(--color-rule);
+  box-shadow: 0 1px 0 var(--color-rule);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

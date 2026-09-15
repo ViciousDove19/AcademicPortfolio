@@ -1,20 +1,22 @@
 'use client'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { WORK_EXPERIENCE } from '../data'
+import { RuleDivider } from '@/components/notebook/rule-divider'
+import { MarginNote } from '@/components/notebook/margin-note'
 
 const VARIANTS_CONTAINER = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.12,
     },
   },
 }
 
 const VARIANTS_SECTION = {
-  hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0 },
 }
 
 const TRANSITION_SECTION = {
@@ -22,50 +24,53 @@ const TRANSITION_SECTION = {
 }
 
 export default function ExperiencePage() {
+  const shouldReduceMotion = useReducedMotion()
+  const container = shouldReduceMotion ? { hidden: {}, visible: {} } : VARIANTS_CONTAINER
+  const section = shouldReduceMotion ? { hidden: {}, visible: {} } : VARIANTS_SECTION
+
   return (
-    <motion.main
-      variants={VARIANTS_CONTAINER}
-      initial="hidden"
-      animate="visible"
-    >
-      <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
-      >
-        <h1 className="mb-5 text-lg font-medium">Work Experience</h1>
-        <div className="flex flex-col space-y-8">
-          {WORK_EXPERIENCE.map((job) => (
-            <div key={job.id} className="space-y-2 px-1">
-              <div className="flex flex-row items-baseline justify-between">
-                <div>
-                  <a
-                    href={job.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-[450] text-zinc-900 underline-offset-2 hover:underline dark:text-zinc-50"
-                  >
-                    {job.title}
-                  </a>
-                  <p className="text-zinc-500 dark:text-zinc-400">
-                    {job.company}
+    <motion.main variants={container} initial="hidden" animate="visible">
+      <motion.section variants={section} transition={TRANSITION_SECTION}>
+        <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-faint">
+          Notebook — lab record
+        </p>
+        <h1 className="mt-2 mb-8 font-serif text-xl font-medium text-ink">
+          Work Experience
+        </h1>
+        <div className="flex flex-col">
+          {WORK_EXPERIENCE.map((job, i) => (
+            <div key={job.id}>
+              {i > 0 && <RuleDivider className="my-8" />}
+              <div className="space-y-3 px-1">
+                <div className="flex flex-row items-baseline justify-between gap-3">
+                  <div>
+                    <a
+                      href={job.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-serif text-base font-medium text-ink underline-offset-2 hover:text-accent hover:underline"
+                    >
+                      {job.title}
+                    </a>
+                    <p className="text-sm text-ink-soft">{job.company}</p>
+                  </div>
+                  <p className="shrink-0 font-mono text-xs text-ink-faint">
+                    {job.start} – {job.end}
                   </p>
                 </div>
-                <p className="shrink-0 text-sm text-zinc-500 dark:text-zinc-400">
-                  {job.start} - {job.end}
-                </p>
+                <ul className="list-disc space-y-1.5 pl-5 marker:text-accent">
+                  {job.highlights.map((highlight, index) => (
+                    <li key={index} className="text-sm leading-relaxed text-ink-soft">
+                      {highlight}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="list-disc space-y-1.5 pl-5">
-                {job.highlights.map((highlight, index) => (
-                  <li
-                    key={index}
-                    className="text-base text-zinc-600 dark:text-zinc-400"
-                  >
-                    {highlight}
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
+        </div>
+        <div className="mt-10 px-1">
+          <MarginNote>still writing this page as I go</MarginNote>
         </div>
       </motion.section>
     </motion.main>

@@ -1,3 +1,6 @@
+import { Stamp } from '@/components/notebook/stamp'
+import { SketchWaveletDomain } from '@/components/notebook/sketches'
+
 export const metadata = {
   title: 'WAAU-Net: Wavelet-domain adversarial training for cross-population segmentation',
   description:
@@ -9,24 +12,51 @@ export const metadata = {
 
 # WAAU-Net
 
-*Status: Under review, IEEE JBHI*
+<Stamp>Under review, IEEE JBHI</Stamp>
+
+*Wavelet-domain adversarial training for cross-population segmentation.*
+
+## In plain language
+
+A segmentation model trained on ultrasound from one population often gets
+worse when it's applied to scans from another — sometimes because the
+disease presents differently, but often just because the scanners and
+acquisition settings differ. WAAU-Net tries to separate those two effects
+and correct for the acquisition-driven part by aligning the frequency bands,
+via wavelets, where those differences concentrate.
+
+<div className="not-prose my-6 max-w-xs">
+  <SketchWaveletDomain />
+</div>
 
 ## Overview
 
-{/* TODO: 2-3 paragraph expansion of the motivation and problem statement */}
+Breast ultrasound segmentation models degrade when moved between scanner
+populations. WAAU-Net applies adversarial alignment in the wavelet domain,
+targeting the frequency bands where acquisition differences concentrate, to
+improve robustness across populations.
 
 ## Method
 
-{/* TODO: architecture / approach details */}
+An adaptive wavelet normalization module is combined with adversarial
+alignment in the wavelet domain, so the model is trained to be invariant to
+the frequency bands where acquisition differences concentrate rather than
+to the full image spectrum.
 
 ## Data
 
-{/* TODO: dataset(s) used, cohort/source description */}
+Evaluated across demographically distinct cohorts — Indian, Polish, and
+Egyptian — to separate segmentation failures caused by acquisition
+differences from those caused by genuine biological variation.
 
 ## Results
 
-{/* TODO: quantitative results once available; leave as "results pending" if still under review */}
+Shows that segmentation performance degrades across these cohorts for both
+acquisition and biological reasons, and that the adaptive wavelet
+normalization module narrows that gap. Full quantitative results are
+pending publication.
 
-## Status & Links
+## Status & links
 
-{/* TODO: link out to preprint/code once available, or state "under review" */}
+Manuscript under review at IEEE Journal of Biomedical and Health
+Informatics. Links will be added once available.

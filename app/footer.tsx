@@ -39,7 +39,7 @@ function ThemeSwitch() {
 
   return (
     <AnimatedBackground
-      className="pointer-events-none rounded-lg bg-zinc-100 dark:bg-zinc-800"
+      className="pointer-events-none rounded-lg bg-paper-alt"
       defaultValue={theme}
       transition={{
         type: 'spring',
@@ -55,7 +55,7 @@ function ThemeSwitch() {
         return (
           <button
             key={theme.id}
-            className="inline-flex h-7 w-7 items-center justify-center text-zinc-500 transition-colors duration-100 focus-visible:outline-2 data-[checked=true]:text-zinc-950 dark:text-zinc-400 dark:data-[checked=true]:text-zinc-50"
+            className="inline-flex h-7 w-7 items-center justify-center text-ink-faint transition-colors duration-100 focus-visible:outline-2 data-[checked=true]:text-accent"
             type="button"
             aria-label={`Switch to ${theme.label} theme`}
             data-id={theme.id}
@@ -79,7 +79,7 @@ function MagneticSocialLink({
     <Magnetic springOptions={{ bounce: 0 }} intensity={0.3}>
       <a
         href={link}
-        className="group relative inline-flex shrink-0 items-center gap-[1px] rounded-full bg-zinc-100 px-2.5 py-1 text-sm text-black transition-colors duration-200 hover:bg-zinc-950 hover:text-zinc-50 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+        className="group relative inline-flex shrink-0 items-center gap-[1px] rounded-full border border-rule bg-paper-alt px-2.5 py-1 text-sm text-ink transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-paper"
       >
         {children}
         <svg
@@ -104,14 +104,15 @@ function MagneticSocialLink({
 
 export function Footer() {
   return (
-    <footer className="mt-24 px-0 py-4">
+    <footer className="mt-24 border-t border-rule px-0 py-6">
       <div className="mb-6 flex flex-col space-y-3">
-        <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-          Connect
-        </h3>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <h3 className="font-serif text-sm font-medium text-ink">Connect</h3>
+        <p className="text-sm text-ink-soft">
           Feel free to contact me at{' '}
-          <a className="underline dark:text-zinc-300" href={`mailto:${EMAIL}`}>
+          <a
+            className="text-ink underline decoration-rule underline-offset-2 hover:text-accent"
+            href={`mailto:${EMAIL}`}
+          >
             {EMAIL}
           </a>
         </p>
@@ -123,14 +124,14 @@ export function Footer() {
           ))}
         </div>
       </div>
-      <div className="flex items-center justify-between border-t border-zinc-100 pt-4 dark:border-zinc-800">
+      <div className="flex items-center justify-between pt-2">
         <a href="https://github.com/ibelick/nim" target="_blank">
-          <TextLoop className="text-xs text-zinc-500">
+          <TextLoop className="font-mono text-xs text-ink-faint">
             <span>© {new Date().getFullYear()} Chinmay Raut.</span>
             <span>Research Scientist</span>
           </TextLoop>
         </a>
-        <div className="text-xs text-zinc-400">
+        <div className="text-xs text-ink-faint">
           <ThemeSwitch />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono, Shantell_Sans, Caveat } from 'next/font/google'
+import { Geist, Geist_Mono, Indie_Flower, Caveat } from 'next/font/google'
 import { Header } from './header'
 import { Footer } from './footer'
 import { ThemeProvider } from 'next-themes'
@@ -32,8 +32,9 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const handDisplay = Shantell_Sans({
+const handDisplay = Indie_Flower({
   variable: '--font-hand-display',
+  weight: '400',
   subsets: ['latin'],
 })
 
@@ -48,7 +49,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geist.variable} ${geistMono.variable} ${handDisplay.variable} ${caveat.variable}`}
+    >
     {/* Google Analytics 4 */}
     <Script
       src={`https://www.googletagmanager.com/gtag/js?id=G-DDZ0V974RD`}
@@ -62,9 +67,7 @@ export default function RootLayout({
         gtag('config', 'G-DDZ0V974RD');
       `}
     </Script>
-      <body
-        className={`${geist.variable} ${geistMono.variable} ${handDisplay.variable} ${caveat.variable} bg-paper tracking-tight text-ink antialiased selection:bg-accent/20`}
-      >
+      <body className="bg-paper tracking-tight text-ink antialiased selection:bg-accent/20">
         <ThemeProvider
           enableSystem={true}
           attribute="class"

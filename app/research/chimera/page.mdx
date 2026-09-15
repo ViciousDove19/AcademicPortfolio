@@ -1,10 +1,11 @@
 import { Stamp } from '@/components/notebook/stamp'
+import { MarginNote } from '@/components/notebook/margin-note'
 import { SketchAgentGraph } from '@/components/notebook/sketches'
 
 export const metadata = {
-  title: 'CHIMERA: Agentic multimodal decision support for prostate cancer — MICCAI 2026 Challenge',
+  title: 'CHIMERA: Policy-orchestrated specialist agents for prostate-cancer decision support',
   description:
-    'An agentic pipeline that integrates histopathology, clinical, and molecular evidence to produce prostate cancer risk assessments, evaluated on both prediction accuracy and the fidelity of the reasoning trace it produces.',
+    'A clinical guideline is turned into an explicit, executable policy graph: narrow specialist agents read only the evidence relevant to one node at a time, and an orchestrator walks the graph to a decision, producing an auditable trace at every step.',
   alternates: {
     canonical: '/research/chimera',
   },
@@ -12,30 +13,117 @@ export const metadata = {
 
 # CHIMERA
 
-<Stamp>Ongoing — MICCAI 2026 Challenge</Stamp>
+<Stamp>MICCAI 2026 Challenge submission</Stamp>
 
-*Agentic multimodal decision support for prostate cancer.*
+*Policy-orchestrated specialist agents for prostate-cancer decision support.*
 
 ## In plain language
 
-A clinical decision is rarely made from one type of evidence. CHIMERA is an
-agentic pipeline that brings histopathology, clinical, and molecular
-evidence together to assess prostate cancer risk — and, because the
-reasoning is produced by an agent rather than a single opaque model, it can
-be evaluated on whether that reasoning trace holds up, not just on whether
-the final answer was right.
+Start with the problem a clinician actually has: a prostate-cancer guideline
+isn't one rule, it's a pathway — the same finding means something different
+depending on where a patient already is in that pathway, and evidence can be
+missing or conflicting. A single model that reads everything and outputs a
+decision has to hold all of that context implicitly, which makes it very
+hard to check *why* it decided what it decided.
+
+So this project doesn't build one model. It builds a graph. The guideline
+itself — the EAU prostate-cancer pathway — becomes an explicit map of
+narrow questions. A small "specialist" agent answers each question using
+only the evidence relevant to it, and hands back a structured verdict. An
+orchestrator, not the specialist, decides which edge of the graph to follow
+next. Walk that process to the end and you get a decision *and* a full
+record of how it was reached — which pieces of evidence were used, how
+confident each step was, and a written rationale that's checked against the
+evidence before anyone sees it.
 
 <div className="not-prose my-6 max-w-xs">
   <SketchAgentGraph />
 </div>
 
+<MarginNote className="text-lg">
+  the trick isn&rsquo;t a bigger model — it&rsquo;s forcing the reasoning
+  through checkpoints you can double-check
+</MarginNote>
+
 ## Overview
 
-An agentic pipeline that integrates histopathology, clinical, and molecular
-evidence to produce prostate cancer risk assessments, evaluated on both
-prediction accuracy and the fidelity of the reasoning trace it produces.
+Prostate-cancer decisions combine imaging, biomarkers, and pathology, but
+what each finding means depends on the patient's current point in the
+clinical pathway. End-to-end models have to infer that context implicitly
+while interpreting evidence, which makes it hard to verify whether any
+single variable was actually applied correctly. CHIMERA asks whether making
+that structure explicit — instead of asking one model to hold it all in its
+head — produces decisions that are both accurate and auditable.
+
+## Method
+
+The EAU prostate-cancer guideline pathway is encoded as an explicit,
+executable policy graph. Every node in the graph is one narrow clinical
+question. Where the answer is a structured value, it's read directly; where
+it depends on narrative text, a specialist agent — radiology, biochemistry,
+and so on — reads only the evidence relevant to that node and returns a
+structured verdict: its call, the findings that support it, which variables
+it used, and a short local rationale. The specialist's verdict selects which
+edge of the graph to follow; the orchestrator walks the graph, not the
+specialists. When evidence is missing, the graph has an explicit fallback —
+retrieve it, order the prerequisite test first, or follow a dedicated
+historical branch.
+
+Once a full path is traversed, that trace drives three things: a weight for
+every clinical variable involved (from *not used* to *decisive*, based on
+where in the graph it mattered and whether it actually changed the
+decision), a confidence level (*clear*, *borderline*, or *uncertain*,
+evaluated in a fixed order so a weak downstream signal can never override a
+stronger upstream one), and finally a written rationale — produced by a
+separate rationale writer that cannot alter the decision, the weights, or
+the confidence, and which is checked by a validator against the evidence
+actually revealed before it's shown.
+
+## Data
+
+Evaluated on all 163 labelled cases from the CHIMERA-Agent challenge — 91
+biopsy-decision cases and 72 management-decision cases — via the official,
+live MCP evaluation interface.
+
+## Results
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Weights</th>
+      <th>Confidence</th>
+      <th>Rationale</th>
+      <th>Decisions correct</th>
+      <th>Ranking</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Task 1 — biopsy decision</td>
+      <td>0.8719</td>
+      <td>0.7885</td>
+      <td>0.8538</td>
+      <td>78 / 91</td>
+      <td>0.8060</td>
+    </tr>
+    <tr>
+      <td>Task 2 — management decision</td>
+      <td>0.8473</td>
+      <td>0.9118</td>
+      <td>0.8338</td>
+      <td>68 / 72</td>
+      <td>0.8504</td>
+    </tr>
+  </tbody>
+</table>
+
+Overall evaluator score: **0.8282**.
 
 ## Status & links
 
-Ongoing work submitted to the MICCAI 2026 Challenge. Results and links will
-be added once the challenge concludes.
+Submitted to the CHIMERA-Agent Challenge at MICCAI 2026. Code is available
+at [github.com/ViciousDove19/chimera-baseline](https://github.com/ViciousDove19/chimera-baseline),
+explicitly marked as not for clinical use without external validation.
+The specialists currently hold task-focused rather than comprehensive
+clinical knowledge — sharpening that is the identified next step.

@@ -1,0 +1,175 @@
+import { Stamp } from '@/components/notebook/stamp'
+import { MarginNote } from '@/components/notebook/margin-note'
+import { SketchSoftToken } from '@/components/notebook/sketches'
+import { BarChart } from '@/components/notebook/bar-chart'
+import { StatTiles } from '@/components/notebook/stat-tiles'
+
+export const metadata = {
+  title: 'A decoder-free soft-token segmenter for point-of-care breast ultrasound',
+  description:
+    'Segmentation conventionally means an encoder plus a decoder. This project replaces the decoder with a single linear head over the ViT’s own patch tokens, predicting a continuous per-patch tumour fraction instead of a binary label.',
+  alternates: {
+    canonical: '/research/decoder-free-segmentation',
+  },
+}
+
+# Decoder-Free Segmentation
+
+<Stamp>Paper scaffold — in preparation</Stamp>
+
+*A decoder-free soft-token segmenter for point-of-care breast ultrasound.*
+
+<div className="text-sm italic text-ink-faint">
+  A note before you read this one: this page is written from an early paper
+  scaffold, not a finished manuscript — some figures and comparisons the
+  eventual paper will include aren&rsquo;t built yet. Where that&rsquo;s the
+  case below, it&rsquo;s said plainly rather than filled in.
+</div>
+
+## In plain language
+
+Segmentation papers almost always assume the same shape: an encoder that
+understands the image, and a decoder that turns that understanding back
+into a pixel-by-pixel mask. The decoder is usually taken for granted — of
+course you need one, how else would you get back to pixel resolution?
+
+This project pokes at that assumption directly. Instead of a decoder, it
+uses a single linear layer on top of the Vision Transformer's own patch
+tokens — one number per patch, trained to predict what *fraction* of that
+patch is tumour, not just whether it is or isn't. At inference, that's a
+sigmoid, a reshape into a grid, and a bilinear upsample. No decoder at all.
+An oracle experiment backs this up: if you compute the best-possible
+continuous per-patch label directly from the ground-truth mask and just
+upsample *that*, you already recover almost all of the achievable
+segmentation quality — which suggests the usual "token classification is
+too coarse" objection is really about label softness and patch size, not
+about needing a decoder.
+
+<div className="not-prose my-6 max-w-xs">
+  <SketchSoftToken />
+</div>
+
+<MarginNote className="text-lg">
+  half the model in most segmentation papers turns out to be optional
+</MarginNote>
+
+## Overview
+
+Encoder-decoder segmentation adds real parameter count and training
+overhead on top of the encoder alone — a cost point-of-care deployment
+feels acutely. This project asks whether that decoder is actually earning
+its place, or whether a much smaller mechanism can do nearly as well once
+patch size and label softness are handled properly.
+
+## Method
+
+The segmenter is a ViT encoder plus a linear head — 194 parameters at
+ViT-Tiny scale — producing one logit per patch token, trained with
+binary cross-entropy against the *continuous* tumour-area fraction inside
+that patch, not a binarised label. Patch size is set to 8 instead of the
+usual 16, for finer spatial granularity (784 tokens instead of 196), with
+patch and position embeddings resized from a patch-16 checkpoint rather
+than reinitialised from scratch. At inference: sigmoid each token's logit,
+reshape into a grid, bilinearly upsample to full resolution, threshold.
+
+## Data
+
+Training pools 8 public breast-ultrasound sources (3,373 images from 3,263
+patients). A ninth source, BUS-BRA, is deliberately excluded from training
+entirely and used only as the test population — both for in-domain testing
+(train and test on BUS-BRA) and for a cross-population test (train on the
+other 8 sources, test on BUS-BRA with no BUS-BRA labels ever seen).
+
+## Results
+
+The oracle analysis is the clearest evidence for the core idea — at the
+same patch size, continuous labels beat binarised ones by a wide margin,
+and finer patches push the ceiling further still:
+
+<BarChart
+  title="Oracle ceiling — Dice, by label type and patch size"
+  data={[
+    { label: 'Patch 16, hard label', value: 0.8355 },
+    { label: 'Patch 16, soft label', value: 0.9027, highlight: true },
+    { label: 'Patch 8, soft label', value: 0.9702, highlight: true },
+  ]}
+  highlightLabel="soft label"
+  mutedLabel="hard label"
+/>
+
+In-domain, the actual 5.53M-parameter decoder-free model lands within one
+to two Dice points of ViT-B+FPN baselines roughly 15× its size:
+
+<BarChart
+  title="In-domain Dice — decoder-free vs. encoder-decoder baselines"
+  data={[
+    { label: 'Ours (5.5M)', value: 0.8713, highlight: true },
+    { label: 'DINOv2+FPN', value: 0.9111 },
+    { label: 'USFM+FPN', value: 0.8926 },
+    { label: 'ViT-B+FPN', value: 0.8901 },
+    { label: 'ResNet50+FPN', value: 0.8868 },
+    { label: 'breast-JEPA+FPN', value: 0.8813 },
+    { label: 'USF-MAE+FPN', value: 0.8543 },
+  ]}
+  caption="DINOv2's lead is the one gap that's real given measurement precision; the rest are marginal."
+/>
+
+That gap all but disappears when you look at compute instead of accuracy:
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Params</th>
+      <th>GFLOPs</th>
+      <th>Throughput</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ours (decoder-free)</td>
+      <td>5.53M</td>
+      <td>4.22</td>
+      <td>1,267 img/s</td>
+    </tr>
+    <tr>
+      <td>ResNet50+FPN</td>
+      <td>24.59M</td>
+      <td>&mdash;</td>
+      <td>1,217 img/s</td>
+    </tr>
+    <tr>
+      <td>ViT-B/16+FPN</td>
+      <td>87.08M</td>
+      <td>&mdash;</td>
+      <td>700 img/s</td>
+    </tr>
+    <tr>
+      <td>DINOv2 ViT-B/14+FPN</td>
+      <td>87.86M</td>
+      <td>123</td>
+      <td>75 img/s</td>
+    </tr>
+  </tbody>
+</table>
+
+<StatTiles
+  stats={[
+    { label: 'Peak memory (ours)', value: '55MB' },
+    { label: 'GPU latency', value: '4.51ms' },
+    { label: 'CPU latency', value: '31.3ms' },
+  ]}
+/>
+
+**Not yet available:** cross-population *baseline* comparisons. The
+decoder-free model's own cross-population number exists — Dice 0.7915 — but
+there's no baseline result to compare it against yet, so no claim is made
+about how that stacks up against a conventional encoder-decoder model
+tested the same way.
+
+## Status & links
+
+An early paper scaffold — the abstract itself is still unwritten, and
+several figures (qualitative overlays, the oracle comparison visual) are
+placeholders pending real ultrasound images. No venue has been finalised
+yet.

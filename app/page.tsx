@@ -10,7 +10,8 @@ import {
   SketchPeritumoral,
   SketchWaveletDomain,
   SketchAgentGraph,
-  SketchUltrasoundCorpus,
+  SketchDistillation,
+  SketchSoftToken,
   SketchLabBench,
   SketchScooter,
   SketchARHeadset,
@@ -26,10 +27,11 @@ import {
 } from './data'
 
 const SKETCHES: Record<string, React.ComponentType> = {
-  'ps-mae': SketchPeritumoral,
-  openbus: SketchUltrasoundCorpus,
-  'waau-net': SketchWaveletDomain,
   chimera: SketchAgentGraph,
+  'ps-mae': SketchPeritumoral,
+  'tiny-vit-distillation': SketchDistillation,
+  'decoder-free-segmentation': SketchSoftToken,
+  'waau-net': SketchWaveletDomain,
 }
 
 const JOB_SKETCHES: Record<string, React.ComponentType> = {

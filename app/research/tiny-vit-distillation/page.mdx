@@ -1,0 +1,152 @@
+import { Stamp } from '@/components/notebook/stamp'
+import { MarginNote } from '@/components/notebook/margin-note'
+import { SketchDistillation } from '@/components/notebook/sketches'
+import { BarChart } from '@/components/notebook/bar-chart'
+
+export const metadata = {
+  title: 'A 5.7M-parameter ultrasound encoder for point-of-care deployment',
+  description:
+    'Distilling an 86M-parameter ultrasound foundation model into a 5.7M-parameter student with a deliberately minimal recipe, to find out which parts of a heavier distillation pipeline were actually load-bearing.',
+  alternates: {
+    canonical: '/research/tiny-vit-distillation',
+  },
+}
+
+# Tiny ViT Distillation
+
+<Stamp>Paper plan — draft results, not yet submitted</Stamp>
+
+*A 5.7M-parameter ultrasound encoder for point-of-care deployment: simple
+masked latent distillation, and where compression fails.*
+
+<div className="text-sm italic text-ink-faint">
+  A note before you read this one: this page is written from a paper plan,
+  not a finished manuscript. The numbers below are the plan&rsquo;s own
+  draft results — nothing here has been invented or estimated — but they
+  haven&rsquo;t been through peer review, and one important measurement
+  (below) hasn&rsquo;t been taken yet.
+</div>
+
+## In plain language
+
+Ultrasound foundation models keep converging on the same shape: a
+Vision Transformer with roughly 86 million parameters. That's fine in a
+research lab, but it will never run on the hardware point-of-care
+ultrasound actually happens on — a laptop, a phone, a handheld probe's own
+compute. A prior paper (TinyUSFM) already showed you *can* compress these
+models down, but it took an elaborate pipeline to do it: curating a
+200,000-image subset, a domain-separated masking scheme, dynamically
+weighted consistency losses. This project asks a more basic question first:
+how much of that machinery is actually necessary?
+
+The answer it tries is almost stubbornly simple. Freeze a large teacher
+model. Show a small student model a masked ultrasound image. Have the
+student predict what the teacher would have "seen" at the masked positions
+— not the pixels, the teacher's own internal representation of them — plus
+one small auxiliary head on top. No curated subset, no dynamic weighting,
+trained on the full uncurated corpus.
+
+<div className="not-prose my-6 max-w-xs">
+  <SketchDistillation />
+</div>
+
+<MarginNote className="text-lg">
+  the twist: compressing the model barely costs you on classification,
+  but it costs you a real amount on segmentation
+</MarginNote>
+
+## Overview
+
+Point-of-care ultrasound is exactly the setting where automated
+interpretation would matter most, and exactly the setting current
+ultrasound foundation models can't run in. This project's question isn't
+just "can we compress the model" — TinyUSFM already answered that — but
+which parts of a heavier compression pipeline were genuinely necessary, and
+which downstream tasks quietly stop working once you shrink the model.
+
+## Method
+
+A frozen 86M-parameter ViT-B teacher (USF-MAE) supervises a 5.7M-parameter
+ViT-Tiny student. Input patches are masked at a 0.3–0.5 ratio; the student
+encodes the masked image, and a cross-attention predictor regresses the
+teacher's embeddings at exactly the masked positions, under a Smooth-L1
+loss. One auxiliary head on the pooled student feature adds a small
+supervised signal on top. That's the entire recipe — deliberately two
+components instead of the prior pipeline's several, trained on an
+uncurated corpus rather than a hand-picked subset.
+
+## Data
+
+532,752 B-mode ultrasound images spanning 18 organs and 54 acquisition
+sources, all public datasets, deduplicated by perceptual hash. Evaluated on
+seven classification and nine segmentation datasets, checked for overlap
+with the pretraining corpus.
+
+## Results
+
+Classification is where the recipe's simplicity pays off — the numbers
+here are relative to baselines rather than absolute scores, since that's
+how the draft reports them:
+
+<table>
+  <thead>
+    <tr>
+      <th>Comparison</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Frozen features vs. 86M USFM (7/7 datasets)</td>
+      <td>+2.3 points mean, p=0.008</td>
+    </tr>
+    <tr>
+      <td>Frozen features vs. TinyUSFM (7/7 datasets)</td>
+      <td>+5.7 points mean</td>
+    </tr>
+    <tr>
+      <td>Fine-tuned vs. four 86M baselines</td>
+      <td>indistinguishable (&le;0.009 difference)</td>
+    </tr>
+    <tr>
+      <td>At 1% / 10% labels vs. TinyUSFM (7/7 datasets)</td>
+      <td>+6 to +10 points, p=0.008</td>
+    </tr>
+  </tbody>
+</table>
+
+That parity doesn't extend to segmentation, where the compact model
+genuinely trails the 86M encoders it was distilled from:
+
+<BarChart
+  title="Segmentation Dice — compact vs. full-size encoders"
+  data={[
+    { label: 'Student (5.7M)', value: 0.6506, highlight: true },
+    { label: 'TinyUSFM (5.7M)', value: 0.6716 },
+    { label: 'USFM (86M)', value: 0.7179 },
+    { label: 'USF-MAE (86M)', value: 0.7248 },
+  ]}
+  highlightLabel="this project's student"
+  mutedLabel="other encoder"
+/>
+
+So compression is nearly free for whole-image classification, but
+genuinely costly for dense, pixel-level prediction. A separate analysis of
+the *shape* of what each model learned turned up something the plan itself
+calls a genuine surprise: a model's usable representational rank has no
+measurable correlation with its downstream accuracy, and the relationship
+between rank and robustness to image corruption actually reverses sign
+depending on whether you're comparing across different models or shrinking
+one model's own representation — a reminder that some intuitive-sounding
+representation-quality metrics don't transfer the way you'd expect.
+
+**Not yet measured:** the actual efficiency numbers — GFLOPs, latency,
+memory — that would make the deployment argument concrete. The plan flags
+this explicitly as the single highest-priority missing experiment, so it's
+stated here as pending rather than filled in with a guess.
+
+## Status & links
+
+This is a paper plan, target venue *Computers in Biology and Medicine* —
+not yet a submitted manuscript. The results above are the plan's own draft
+findings and may change before submission.

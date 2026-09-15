@@ -8,14 +8,6 @@ type WorkExperience = {
   highlights: string[]
 }
 
-type BlogPost = {
-  title: string
-  description: string
-  link: string
-  uid: string
-  date: string
-}
-
 type SocialLink = {
   label: string
   link: string
@@ -66,71 +58,88 @@ I'm interested more broadly in modelling biological intelligence: what biologica
 // TODO: fill in arXiv/code links once available.
 export const RESEARCH: ResearchProject[] = [
   {
+    id: 'research-chimera',
+    name: 'CHIMERA',
+    slug: 'chimera',
+    subtitle: 'Policy-orchestrated specialist agents for prostate-cancer decision support',
+    question: 'Can an agent be evaluated on how it reasoned, not only on its final answer?',
+    description:
+      'A clinical guideline is turned into an explicit, executable policy graph: narrow specialist agents read only the evidence relevant to one node at a time, and an orchestrator — not the specialists — walks the graph to a decision. Every step produces an auditable trace: which variables mattered, how confident the call was, and a rationale checked against the evidence before it is shown.',
+    status: 'MICCAI 2026 Challenge submission',
+    links: [{ label: 'Code', href: 'https://github.com/ViciousDove19/chimera-baseline' }],
+  },
+  {
     id: 'research-ps-mae',
     name: 'PS-MAE',
     slug: 'ps-mae',
     subtitle:
-      'Peritumoral masked autoencoding for axillary lymph node metastasis prediction',
+      'A clinically-informed peritumoral masked autoencoder for axillary lymph node status',
     question: 'Does the evidence for spread sit inside the tumour, or in the tissue around it?',
     description:
-      'Nodal status in breast cancer is decided by tissue that sits outside the tumour, but most imaging models are trained to attend to the lesion itself. PS-MAE uses a Sobel-guided masking scheme over the peritumoral ring to force the encoder to represent the margin and surrounding tissue during pretraining, rather than treating it as background.',
+      'Nodal status in breast cancer is decided by tissue that sits outside the tumour, but most imaging models are trained to attend to the lesion itself. PS-MAE masks only the peritumoral ring during pretraining and reconstructs its edge structure rather than raw pixels, so the encoder is forced to represent the margin instead of treating it as background.',
     status: 'Under review, IEEE JBHI',
   },
   {
-    id: 'research-openbus',
-    name: 'OpenBUS',
-    slug: 'openbus',
-    subtitle: 'A foundation model for breast and multi-anatomy ultrasound',
-    question:
-      'Can one encoder generalise across ultrasound anatomies instead of a bespoke model per task?',
+    id: 'research-tiny-vit-distillation',
+    name: 'Tiny ViT Distillation',
+    slug: 'tiny-vit-distillation',
+    subtitle: 'A 5.7M-parameter ultrasound encoder for point-of-care deployment',
+    question: 'How much of a compression pipeline is actually necessary?',
     description:
-      'A JEPA-style self-supervised model trained across a curated multi-source ultrasound corpus, using masking informed by ultrasound image formation rather than uniform random patches. The aim is a general-purpose ultrasound encoder that transfers across anatomies and acquisition settings.',
-    status: 'In preparation, Medical Image Analysis',
+      'Ultrasound foundation models converge on 86M-parameter backbones that never run on point-of-care hardware. This project distils one down to a 5.7M-parameter student with a deliberately minimal recipe — no curated coresets, no dynamic weighting — to find out which parts of a heavier distillation pipeline were load-bearing, and which task families survive compression at all.',
+    status: 'Paper plan, target: Computers in Biology and Medicine',
+  },
+  {
+    id: 'research-decoder-free-segmentation',
+    name: 'Decoder-Free Segmentation',
+    slug: 'decoder-free-segmentation',
+    subtitle: 'A decoder-free soft-token segmenter for point-of-care breast ultrasound',
+    question: 'Does a segmentation model actually need a decoder, or is that just convention?',
+    description:
+      'Segmentation conventionally means an encoder plus a decoder. This project replaces the decoder with a single linear head over the ViT’s own patch tokens, trained to predict a continuous per-patch tumour-area fraction instead of a binary label — and asks how much of the usual decoder machinery that soft, fine-grained token head actually makes redundant.',
+    status: 'Paper scaffold, in preparation',
   },
   {
     id: 'research-waau-net',
     name: 'WAAU-Net',
     slug: 'waau-net',
-    subtitle: 'Wavelet-domain adversarial training for cross-population segmentation',
+    subtitle: 'Wavelet-domain adversarial adaptation for cross-cohort segmentation',
     question: 'Why does a segmentation model trained on one population fail on another?',
     description:
-      'Breast ultrasound segmentation models degrade when moved between scanner populations. WAAU-Net applies adversarial alignment in the wavelet domain, targeting the frequency bands where acquisition differences concentrate, to improve robustness across populations.',
-    status: 'Under review, IEEE JBHI',
-  },
-  {
-    id: 'research-chimera',
-    name: 'CHIMERA',
-    slug: 'chimera',
-    subtitle: 'Agentic multimodal decision support for prostate cancer — MICCAI 2026 Challenge',
-    question: 'Can an agent be evaluated on how it reasoned, not only on its final answer?',
-    description:
-      'An agentic pipeline that integrates histopathology, clinical, and molecular evidence to produce prostate cancer risk assessments, evaluated on both prediction accuracy and the fidelity of the reasoning trace it produces.',
-    // TODO: update with final leaderboard rank once known.
-    status: 'Ongoing',
+      'A radiomics analysis found that most of what differs between hospital cohorts concentrates in the wavelet domain, not the raw image. WAAU-Net acts on that finding directly: it decomposes each image into frequency subbands and learns, per subband, how much to normalise away — trained jointly with a cohort discriminator so the encoder can’t tell which hospital an image came from.',
+    status: 'Preprint submitted, Biomedical Signal Processing and Control',
   },
 ]
 
-// TODO: fill in formal titles for PS-MAE / WAAU-Net once submitted titles are final,
-// and the ICECCME title + link once available.
+// TODO: fill in arXiv/code links once available.
 export const PUBLICATIONS: Publication[] = [
   {
     id: 'pub-ps-mae',
-    title: 'PS-MAE: Peritumoral masked autoencoding for axillary lymph node metastasis prediction',
+    title:
+      'Clinically-Informed Peritumoral Masked Autoencoder for Axillary Lymph Node Status Assessment from Breast Ultrasound',
     venue: 'IEEE Journal of Biomedical and Health Informatics',
     year: '2026',
     status: 'under-review',
   },
   {
     id: 'pub-waau-net',
-    title: 'WAAU-Net: Wavelet-domain adversarial training for cross-population segmentation',
-    venue: 'IEEE Journal of Biomedical and Health Informatics',
+    title:
+      'WAAU-Net: Wavelet-Domain Adversarial Adaptation for Cross-Cohort Generalization in Breast Ultrasound Tumor Segmentation',
+    venue: 'Biomedical Signal Processing and Control',
     year: '2026',
     status: 'under-review',
   },
   {
-    id: 'pub-openbus',
-    title: 'OpenBUS: A foundation model for breast and multi-anatomy ultrasound',
-    venue: 'Medical Image Analysis',
+    id: 'pub-tiny-vit-distillation',
+    title:
+      'A 5.7M-Parameter Ultrasound Encoder for Point-of-Care Deployment: Simple Masked Latent Distillation, and Where Compression Fails',
+    venue: 'Computers in Biology and Medicine',
+    status: 'in-preparation',
+  },
+  {
+    id: 'pub-decoder-free-segmentation',
+    title: 'A Decoder-Free Soft-Token Segmenter for Point-of-Care Breast Ultrasound',
+    venue: 'Target venue not yet finalized',
     status: 'in-preparation',
   },
   {
@@ -208,29 +217,9 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
   },
 ]
 
-export const BLOG_POSTS: BlogPost[] = [
-  {
-    title: 'Exploring the Intersection of Design, AI, and Design Engineering',
-    description: 'How AI is changing the way we design',
-    link: '/blog/exploring-the-intersection-of-design-ai-and-design-engineering',
-    uid: 'blog-1',
-    // TODO: set actual publish date.
-    date: '2024-01-01',
-  },
-  {
-    title: 'How to Export Metadata from MDX for Next.js SEO',
-    description: 'A guide on exporting metadata from MDX files to leverage Next.js SEO features.',
-    link: '/blog/example-mdx-metadata',
-    uid: 'blog-4',
-    // TODO: set actual publish date.
-    date: '2024-01-02',
-  },
-]
-
 export const NAV_LINKS: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Research', href: '/research' },
-  { label: 'Blog', href: '/blog' },
   { label: 'Experience', href: '/experience' },
   { label: 'About', href: '/about' },
 ]

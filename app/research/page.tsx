@@ -5,7 +5,8 @@ import {
   SketchPeritumoral,
   SketchWaveletDomain,
   SketchAgentGraph,
-  SketchUltrasoundCorpus,
+  SketchDistillation,
+  SketchSoftToken,
 } from '@/components/notebook/sketches'
 import { RESEARCH } from '../data'
 
@@ -15,10 +16,11 @@ export const metadata = {
 }
 
 const SKETCHES: Record<string, React.ComponentType> = {
-  'ps-mae': SketchPeritumoral,
-  openbus: SketchUltrasoundCorpus,
-  'waau-net': SketchWaveletDomain,
   chimera: SketchAgentGraph,
+  'ps-mae': SketchPeritumoral,
+  'tiny-vit-distillation': SketchDistillation,
+  'decoder-free-segmentation': SketchSoftToken,
+  'waau-net': SketchWaveletDomain,
 }
 
 export default function ResearchIndex() {

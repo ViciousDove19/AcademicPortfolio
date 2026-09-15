@@ -171,29 +171,80 @@ export function SketchAgentGraph() {
   )
 }
 
-export function SketchUltrasoundCorpus() {
+export function SketchDistillation() {
   return (
-    <SketchFrame label="Schematic: fan-shaped ultrasound acquisitions from multiple anatomies feeding one shared encoder">
-      {[0, 1, 2].map((i) => (
-        <path
-          key={i}
-          d={`M${18 + i * 28} 16 L${8 + i * 28} 40 A20 20 0 0 0 ${28 + i * 28} 40 Z`}
-          className="fill-none stroke-ink-faint"
-          strokeWidth="1"
-        />
-      ))}
-      <text x="4" y="52" className="fill-ink-soft font-mono" fontSize="5.5">
-        multi-anatomy acquisitions
+    <SketchFrame label="Schematic: a large teacher network shrinking into a small student network, connected by a masked-patch input">
+      <circle cx="26" cy="30" r="18" className="fill-none stroke-ink-faint" strokeWidth="1.25" />
+      <text x="10" y="12" className="fill-ink-soft font-mono" fontSize="6">
+        teacher, 86M
       </text>
       <path
-        d="M20 56 L92 56"
+        d="M46 34 H80"
         className="stroke-accent"
         strokeDasharray="2 2"
         strokeWidth="1"
+        markerEnd="url(#arrow2)"
       />
-      <rect x="82" y="46" width="24" height="24" rx="2" className="fill-accent/15 stroke-accent" strokeWidth="1.5" />
-      <text x="83" y="78" className="fill-ink-soft font-mono" fontSize="5.5">
-        shared encoder
+      <defs>
+        <marker id="arrow2" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
+          <path d="M0,0 L5,3 L0,6 Z" className="fill-accent" />
+        </marker>
+      </defs>
+      <circle cx="94" cy="34" r="8" className="fill-accent/15 stroke-accent" strokeWidth="1.5" />
+      <text x="76" y="52" className="fill-ink-soft font-mono" fontSize="6">
+        student, 5.7M
+      </text>
+      <g className="stroke-ink-faint" strokeWidth="0.75">
+        {[0, 1, 2, 3].map((i) => (
+          <rect
+            key={i}
+            x={10 + i * 10}
+            y="66"
+            width="8"
+            height="8"
+            className={i % 2 === 0 ? 'fill-paper-deep' : 'fill-none'}
+          />
+        ))}
+      </g>
+      <text x="4" y="84" className="fill-ink-soft font-mono" fontSize="5.5">
+        masked input patches
+      </text>
+    </SketchFrame>
+  )
+}
+
+export function SketchSoftToken() {
+  return (
+    <SketchFrame label="Schematic: a grid of patch tokens shaded by continuous predicted values, with no decoder stage">
+      {Array.from({ length: 4 }).map((_, row) =>
+        Array.from({ length: 6 }).map((_, col) => {
+          const v = (row * 6 + col) % 5
+          return (
+            <rect
+              key={`${row}-${col}`}
+              x={10 + col * 12}
+              y={14 + row * 12}
+              width="10"
+              height="10"
+              className="stroke-ink-faint"
+              strokeWidth="0.5"
+              style={{ fillOpacity: v / 5 }}
+              fill="var(--color-accent)"
+            />
+          )
+        }),
+      )}
+      <text x="10" y="72" className="fill-ink-soft font-mono" fontSize="5.5">
+        per-patch tumour fraction
+      </text>
+      <path
+        d="M10 78 H106"
+        className="stroke-ink-faint"
+        strokeWidth="0.75"
+        strokeDasharray="1 2"
+      />
+      <text x="10" y="86" className="fill-ink-soft font-mono" fontSize="5.5">
+        no decoder — sigmoid, then upsample
       </text>
     </SketchFrame>
   )

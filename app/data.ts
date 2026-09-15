@@ -232,6 +232,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Research', href: '/research' },
   { label: 'Blog', href: '/blog' },
   { label: 'Experience', href: '/experience' },
+  { label: 'About', href: '/about' },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [
@@ -246,3 +247,34 @@ export const SOCIAL_LINKS: SocialLink[] = [
 ]
 
 export const EMAIL = 'rautchinmay19@gmail.com'
+
+type PersonalGame = {
+  title: string
+  description: string
+  link: string
+}
+
+// TODO: replace every [placeholder] below with real content — this page
+// is scaffolding only, content pass pending.
+export const ABOUT_PROFESSIONAL = `[Placeholder — the fuller "about me" professional narrative goes here. Can start from the homepage bio and expand: how you got into research, what drives the work, where you see it going.]`
+
+export const ABOUT_PERSONAL_INTRO = `[Placeholder — a sentence or two bridging from "the work" to "the person." e.g. Outside the lab, here's what takes up my time.]`
+
+export const ABOUT_FOOTBALL = `[Placeholder — a sentence or two about football: team you support, do you play, how long you've followed it.]`
+
+export const ABOUT_READING = `[Placeholder — a sentence or two about reading: favorite genres, authors, or a book or two worth naming.]`
+
+export const ABOUT_GAMEDEV_INTRO = `[Placeholder — a sentence or two introducing your game-making hobby before the list below: what draws you to it, tools you use, how long you've been doing it.]`
+
+export const PERSONAL_GAMES: PersonalGame[] = [
+  {
+    title: '[Game title]',
+    description: '[One-line description of the game — genre, premise, what makes it yours.]',
+    link: '#',
+  },
+  {
+    title: '[Game title]',
+    description: '[One-line description of the game — genre, premise, what makes it yours.]',
+    link: '#',
+  },
+]

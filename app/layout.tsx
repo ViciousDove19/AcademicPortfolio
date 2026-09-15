@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono, Indie_Flower, Playpen_Sans, Caveat } from 'next/font/google'
+import { Geist, Geist_Mono, Playpen_Sans, Caveat } from 'next/font/google'
 import { Header } from './header'
 import { Footer } from './footer'
 import { ThemeProvider } from 'next-themes'
@@ -32,12 +32,6 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const handBody = Indie_Flower({
-  variable: '--font-hand-body',
-  weight: '400',
-  subsets: ['latin'],
-})
-
 const handDisplay = Playpen_Sans({
   variable: '--font-hand-display',
   subsets: ['latin'],
@@ -57,7 +51,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${handDisplay.variable} ${handBody.variable} ${caveat.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${handDisplay.variable} ${caveat.variable}`}
     >
     {/* Google Analytics 4 */}
     <Script
@@ -72,7 +66,7 @@ export default function RootLayout({
         gtag('config', 'G-DDZ0V974RD');
       `}
     </Script>
-      <body className="bg-paper font-write tracking-tight text-ink antialiased selection:bg-accent/20">
+      <body className="bg-paper font-serif text-[17px] tracking-tight text-ink antialiased selection:bg-accent/20">
         <ThemeProvider
           enableSystem={true}
           attribute="class"

@@ -104,6 +104,15 @@ export default function Personal() {
             Get in touch
           </a>
         </div>
+        <p className="mt-4 px-1 text-sm text-ink-soft">
+          Want to know more about me?{' '}
+          <Link
+            href="/about"
+            className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+          >
+            Visit the About page →
+          </Link>
+        </p>
       </motion.section>
 
       <RuleDivider />

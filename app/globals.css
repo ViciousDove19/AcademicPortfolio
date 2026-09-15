@@ -24,14 +24,13 @@
   --color-paper: #f5efe1;
   --color-paper-alt: #ece2ca;
   --color-paper-deep: #e4d8ba;
-  --color-ink: #211d15;
-  --color-ink-soft: #5b543f;
+  --color-ink: #16130d;
+  --color-ink-soft: #332e21;
   --color-ink-faint: #8d8467;
   --color-rule: #d8cbaa;
   --color-accent: #b23a1c;
   --color-accent-soft: #e0946b;
   --font-serif: var(--font-hand-display), 'Segoe Print', 'Comic Sans MS', ui-sans-serif, sans-serif;
-  --font-write: var(--font-hand-body), 'Segoe Print', 'Comic Sans MS', ui-sans-serif, sans-serif;
   --font-hand: var(--font-caveat), cursive;
 }
 

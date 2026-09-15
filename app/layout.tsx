@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono, Source_Serif_4, Caveat } from 'next/font/google'
+import { Geist, Geist_Mono, Shantell_Sans, Caveat } from 'next/font/google'
 import { Header } from './header'
 import { Footer } from './footer'
 import { ThemeProvider } from 'next-themes'
@@ -32,8 +32,8 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const sourceSerif = Source_Serif_4({
-  variable: '--font-source-serif',
+const handDisplay = Shantell_Sans({
+  variable: '--font-hand-display',
   subsets: ['latin'],
 })
 
@@ -63,7 +63,7 @@ export default function RootLayout({
       `}
     </Script>
       <body
-        className={`${geist.variable} ${geistMono.variable} ${sourceSerif.variable} ${caveat.variable} bg-paper tracking-tight text-ink antialiased selection:bg-accent/20`}
+        className={`${geist.variable} ${geistMono.variable} ${handDisplay.variable} ${caveat.variable} bg-paper tracking-tight text-ink antialiased selection:bg-accent/20`}
       >
         <ThemeProvider
           enableSystem={true}

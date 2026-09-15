@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Stamp } from '@/components/notebook/stamp'
+import { PopIcon } from '@/components/notebook/hover-pop'
 import {
   SketchPeritumoral,
   SketchWaveletDomain,
@@ -39,9 +40,9 @@ export default function ResearchIndex() {
               className="paper-panel group flex flex-col gap-4 rounded-lg p-4 transition-colors hover:border-accent sm:flex-row sm:items-start sm:p-5"
             >
               {Sketch && (
-                <div className="w-full shrink-0 sm:w-28">
+                <PopIcon className="w-full shrink-0 sm:w-28" rotate={-2}>
                   <Sketch />
-                </div>
+                </PopIcon>
               )}
               <div className="min-w-0 flex-1 space-y-1.5">
                 <div className="flex flex-wrap items-center gap-2">

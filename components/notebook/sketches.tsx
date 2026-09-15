@@ -198,3 +198,74 @@ export function SketchUltrasoundCorpus() {
     </SketchFrame>
   )
 }
+
+export function SketchLabBench() {
+  return (
+    <SketchFrame label="Sketch: a microscope beside an open lab notebook">
+      <g className="stroke-ink-faint" strokeWidth="1" fill="none">
+        <path d="M40 66c8 4 20 4 28 0" />
+        <path d="M54 30v28" />
+        <rect x="46" y="18" width="16" height="12" rx="2" />
+        <circle cx="54" cy="14" r="4" />
+        <path d="M50 66h8l3 8H47z" className="fill-paper-alt" />
+      </g>
+      <g className="stroke-accent" strokeWidth="1.25" fill="none">
+        <path d="M74 26h24v34H74z" />
+        <path d="M78 33h16M78 40h16M78 47h10" />
+      </g>
+      <text x="16" y="78" className="fill-ink-soft font-mono" fontSize="6">
+        research lab
+      </text>
+    </SketchFrame>
+  )
+}
+
+export function SketchScooter() {
+  return (
+    <SketchFrame label="Sketch: an electric scooter with a telemetry burst">
+      <g className="stroke-ink-faint" strokeWidth="1.25" fill="none">
+        <circle cx="34" cy="62" r="8" />
+        <circle cx="82" cy="62" r="8" />
+        <path d="M34 62h20l8-24h14" />
+        <path d="M54 62 62 38" />
+        <path d="M62 34h10v8" />
+      </g>
+      <path
+        d="M70 18l3 7-7 2 8 3-4 7"
+        className="stroke-accent"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinejoin="round"
+      />
+      <text x="14" y="80" className="fill-ink-soft font-mono" fontSize="6">
+        400k+ connected vehicles
+      </text>
+    </SketchFrame>
+  )
+}
+
+export function SketchARHeadset() {
+  return (
+    <SketchFrame label="Sketch: an augmented-reality headset with a rendered light cone">
+      <g className="stroke-ink-faint" strokeWidth="1.25" fill="none">
+        <rect x="30" y="30" width="52" height="22" rx="10" />
+        <circle cx="46" cy="41" r="6" />
+        <circle cx="66" cy="41" r="6" />
+      </g>
+      <path
+        d="M56 52 L56 70"
+        className="stroke-ink-faint"
+        strokeWidth="1"
+        strokeDasharray="2 2"
+      />
+      <path
+        d="M40 70 L72 70 L62 56 L50 56 Z"
+        className="fill-accent/15 stroke-accent"
+        strokeWidth="1.25"
+      />
+      <text x="14" y="20" className="fill-ink-soft font-mono" fontSize="6">
+        spherical-harmonic lighting
+      </text>
+    </SketchFrame>
+  )
+}

@@ -30,7 +30,7 @@
   --color-rule: #d8cbaa;
   --color-accent: #b23a1c;
   --color-accent-soft: #e0946b;
-  --font-serif: var(--font-source-serif), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-hand-display), 'Segoe Print', 'Comic Sans MS', ui-sans-serif, sans-serif;
   --font-hand: var(--font-caveat), cursive;
 }
 

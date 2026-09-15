@@ -1,5 +1,5 @@
 import { Stamp } from '@/components/notebook/stamp'
-import { PeritumoralExplorer } from '@/components/experiments/peritumoral-explorer'
+import { SketchPeritumoral } from '@/components/notebook/sketches'
 
 export const metadata = {
   title: 'PS-MAE: Peritumoral masked autoencoding for axillary lymph node metastasis prediction',
@@ -25,7 +25,9 @@ encoder by masking that surrounding margin and asking it to reconstruct it,
 so the representation it learns can't ignore the margin the way a
 lesion-cropped model does.
 
-<PeritumoralExplorer />
+<div className="not-prose my-6 max-w-xs">
+  <SketchPeritumoral />
+</div>
 
 ## Overview
 

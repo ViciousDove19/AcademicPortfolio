@@ -31,6 +31,7 @@
   --color-accent: #b23a1c;
   --color-accent-soft: #e0946b;
   --font-serif: var(--font-hand-display), 'Segoe Print', 'Comic Sans MS', ui-sans-serif, sans-serif;
+  --font-write: var(--font-hand-body), 'Segoe Print', 'Comic Sans MS', ui-sans-serif, sans-serif;
   --font-hand: var(--font-caveat), cursive;
 }
 

@@ -171,6 +171,86 @@ export function SketchAgentGraph() {
   )
 }
 
+export function SketchPolicyPath() {
+  const nodes = [
+    { x: 14, y: 44, l: 'stage' },
+    { x: 40, y: 20, l: 'PSA' },
+    { x: 40, y: 68, l: 'MRI' },
+    { x: 66, y: 44, l: 'biopsy hx' },
+  ]
+  return (
+    <SketchFrame label="Schematic: a branching policy graph with one path lit up, feeding a specialist agent and then a decision with a confidence readout">
+      <path
+        d="M14 44 L40 20 L66 44"
+        className="fill-none stroke-accent"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M40 20 L40 68 M14 44 L40 68"
+        className="fill-none stroke-ink-faint"
+        strokeWidth="0.75"
+        strokeDasharray="1.5 2.5"
+      />
+      {nodes.map((n) => (
+        <g key={n.l}>
+          <circle
+            cx={n.x}
+            cy={n.y}
+            r="5"
+            className={
+              n.l === 'MRI'
+                ? 'fill-paper stroke-ink-faint'
+                : 'fill-paper-alt stroke-accent'
+            }
+            strokeWidth="1.25"
+          />
+          <text
+            x={n.x}
+            y={n.y - 8}
+            textAnchor="middle"
+            className="fill-ink-soft font-mono"
+            fontSize="5.5"
+          >
+            {n.l}
+          </text>
+        </g>
+      ))}
+      <path
+        d="M66 44 H86"
+        className="stroke-accent"
+        strokeWidth="1.5"
+        markerEnd="url(#arrow3)"
+      />
+      <defs>
+        <marker id="arrow3" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
+          <path d="M0,0 L5,3 L0,6 Z" className="fill-accent" />
+        </marker>
+      </defs>
+      <rect
+        x="88"
+        y="30"
+        width="26"
+        height="28"
+        rx="2"
+        className="fill-accent/15 stroke-accent"
+        strokeWidth="1.25"
+      />
+      <text x="91" y="41" className="fill-ink-soft font-mono" fontSize="5">
+        decision
+      </text>
+      <text x="91" y="50" className="fill-ink-soft font-mono" fontSize="5">
+        + weights
+      </text>
+      <text x="91" y="59" className="fill-ink-soft font-mono" fontSize="5">
+        + conf.
+      </text>
+      <text x="10" y="82" className="fill-ink-faint font-mono" fontSize="5.5">
+        one traversed path, everything else left dark
+      </text>
+    </SketchFrame>
+  )
+}
+
 export function SketchDistillation() {
   return (
     <SketchFrame label="Schematic: a large teacher network shrinking into a small student network, connected by a masked-patch input">

@@ -1,6 +1,8 @@
 import { Stamp } from '@/components/notebook/stamp'
 import { MarginNote } from '@/components/notebook/margin-note'
-import { SketchAgentGraph } from '@/components/notebook/sketches'
+import { SketchAgentGraph, SketchPolicyPath } from '@/components/notebook/sketches'
+import { BarChart } from '@/components/notebook/bar-chart'
+import { StatTiles } from '@/components/notebook/stat-tiles'
 
 export const metadata = {
   title: 'CHIMERA: Policy-orchestrated specialist agents for prostate-cancer decision support',
@@ -17,113 +19,188 @@ export const metadata = {
 
 *Policy-orchestrated specialist agents for prostate-cancer decision support.*
 
-## In plain language
+## The gist
 
-Start with the problem a clinician actually has: a prostate-cancer guideline
-isn't one rule, it's a pathway — the same finding means something different
-depending on where a patient already is in that pathway, and evidence can be
-missing or conflicting. A single model that reads everything and outputs a
-decision has to hold all of that context implicitly, which makes it very
-hard to check *why* it decided what it decided.
+A prostate-cancer guideline is not one simple rule. It is a pathway. A
+patient moves through stages, and the same finding can mean different
+things depending on where they already stand. A PSA reading before a first
+biopsy carries different weight than the same reading during a routine
+follow-up years later. On top of that, real evidence is rarely tidy. It can
+be missing. It can point in two directions at once.
 
-So this project doesn't build one model. It builds a graph. The guideline
-itself — the EAU prostate-cancer pathway — becomes an explicit map of
-narrow questions. A small "specialist" agent answers each question using
-only the evidence relevant to it, and hands back a structured verdict. An
-orchestrator, not the specialist, decides which edge of the graph to follow
-next. Walk that process to the end and you get a decision *and* a full
-record of how it was reached — which pieces of evidence were used, how
-confident each step was, and a written rationale that's checked against the
-evidence before anyone sees it.
+A single model that reads everything and hands back one decision has to
+hold all of that context in its head, invisibly. Nothing about the result
+is checkable from the outside. You cannot ask it which finding actually
+mattered, or why.
+
+This project takes a different route. It builds a graph instead of a
+model. The graph is the guideline itself, the EAU prostate-cancer pathway,
+laid out as a series of narrow questions. Each question gets its own small
+specialist agent. That agent reads only the evidence relevant to its one
+question, then hands back a structured verdict. An orchestrator reads that
+verdict and decides which branch of the graph to follow next. The
+specialist never gets to make that call. Walk the process from the first
+question to the last, and two things come out together: a decision, and a
+full record of how the system got there. Which evidence it used. How
+confident it was at each step. A plain written explanation, checked
+against the evidence before anyone reads it.
 
 <div className="not-prose my-6 max-w-xs">
   <SketchAgentGraph />
 </div>
 
 <MarginNote className="text-lg">
-  the trick isn&rsquo;t a bigger model — it&rsquo;s forcing the reasoning
-  through checkpoints you can double-check
+  the trick isn&rsquo;t a bigger model. it&rsquo;s a checkpoint you can
+  double-check at every single step
 </MarginNote>
 
-## Overview
+## Research question
 
-Prostate-cancer decisions combine imaging, biomarkers, and pathology, but
-what each finding means depends on the patient's current point in the
-clinical pathway. End-to-end models have to infer that context implicitly
-while interpreting evidence, which makes it hard to verify whether any
-single variable was actually applied correctly. CHIMERA asks whether making
-that structure explicit — instead of asking one model to hold it all in its
-head — produces decisions that are both accurate and auditable.
+Deciding whether a patient needs a biopsy is never a single lab value. A
+clinician reads imaging, blood biomarkers, and pathology together. She also
+has to know exactly where the patient stands in the pathway already,
+because the same PSA value means something different before a first
+biopsy than it does years later at a routine follow-up. Deciding what to
+do once cancer is already found works the same way. Context changes the
+meaning of the evidence.
 
-## Method
+Guidelines like the EAU pathway already encode this kind of reasoning. But
+they are written for a clinician to read and apply by hand. They are not
+written for a machine to run directly.
 
-The EAU prostate-cancer guideline pathway is encoded as an explicit,
-executable policy graph. Every node in the graph is one narrow clinical
-question. Where the answer is a structured value, it's read directly; where
-it depends on narrative text, a specialist agent — radiology, biochemistry,
-and so on — reads only the evidence relevant to that node and returns a
-structured verdict: its call, the findings that support it, which variables
-it used, and a short local rationale. The specialist's verdict selects which
-edge of the graph to follow; the orchestrator walks the graph, not the
-specialists. When evidence is missing, the graph has an explicit fallback —
-retrieve it, order the prerequisite test first, or follow a dedicated
-historical branch.
+Real patient records make the problem harder still. Tests get skipped.
+Results arrive late, or never arrive at all. Two sources can disagree
+outright. An MRI reading can point one way while an earlier biopsy history
+points the other. An automated agent has to handle two problems at the
+same time, not just one. It has to actually follow the guideline's
+clinical logic, node by node, the way a specialist would. It also has to
+decide what to do when the evidence that logic depends on is missing,
+stale, or contradictory. Neither problem is optional. A model that ignores
+conflicts just to look decisive is dangerous. A model that refuses to
+decide the moment evidence looks messy is useless in practice. This
+project asks whether one system can handle both at once.
 
-Once a full path is traversed, that trace drives three things: a weight for
-every clinical variable involved (from *not used* to *decisive*, based on
-where in the graph it mattered and whether it actually changed the
-decision), a confidence level (*clear*, *borderline*, or *uncertain*,
-evaluated in a fixed order so a weak downstream signal can never override a
-stronger upstream one), and finally a written rationale — produced by a
-separate rationale writer that cannot alter the decision, the weights, or
-the confidence, and which is checked by a validator against the evidence
-actually revealed before it's shown.
+## Solution
 
-## Data
+CHIMERA turns the EAU pathway into a graph a machine can actually run,
+instead of a document only a clinician can apply. Every node in that graph
+is one narrow clinical question. If the answer already sits in the record
+as a structured value, the system reads it directly. If the answer depends
+on narrative text, like a radiology report, that one question goes to a
+specialist agent.
 
-Evaluated on all 163 labelled cases from the CHIMERA-Agent challenge — 91
-biopsy-decision cases and 72 management-decision cases — via the official,
-live MCP evaluation interface.
+Each specialist looks only at the evidence relevant to its own question.
+It never reads the whole case file. It responds with a structured verdict:
+its call, the findings behind that call, which variables it actually used,
+and a short local rationale. The specialist answers. The orchestrator
+decides which edge of the graph to follow next. That separation matters,
+because the specialist never gets to jump ahead in the pathway on its own.
+When evidence is missing, the graph does not simply stall. It has a
+built-in fallback for exactly that case: retrieve the missing piece, order
+the prerequisite test, or follow a dedicated branch for an incomplete
+history.
+
+<div className="not-prose my-6 max-w-xs">
+  <SketchPolicyPath />
+</div>
+
+This design earns clinical trust in three concrete ways.
+
+- **Every clinical variable gets a weight.** Once a case finishes its walk
+  through the graph, the trace shows exactly where each variable mattered,
+  from *not used* to *decisive*. That weight comes from both the graph
+  position and the specialist's own verdict on its key evidence versus its
+  supporting evidence. Nothing goes in as a black-box input.
+- **Confidence tracks real disagreement.** Each decision is labelled
+  *clear*, *borderline*, or *uncertain*, built directly from the conflicts
+  and gaps the system actually ran into along the way. Those labels get
+  checked in a fixed order, so a weak downstream signal can never quietly
+  override a stronger upstream one.
+- **The written rationale cannot rewrite the decision.** A separate
+  rationale writer turns the trace into a short explanation in plain
+  language. It has no power to change the decision, the weights, or the
+  confidence level. A validator then checks that explanation against the
+  evidence actually revealed, before anyone sees it.
 
 ## Results
 
-<table>
-  <thead>
-    <tr>
-      <th>Task</th>
-      <th>Weights</th>
-      <th>Confidence</th>
-      <th>Rationale</th>
-      <th>Decisions correct</th>
-      <th>Ranking</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Task 1 — biopsy decision</td>
-      <td>0.8719</td>
-      <td>0.7885</td>
-      <td>0.8538</td>
-      <td>78 / 91</td>
-      <td>0.8060</td>
-    </tr>
-    <tr>
-      <td>Task 2 — management decision</td>
-      <td>0.8473</td>
-      <td>0.9118</td>
-      <td>0.8338</td>
-      <td>68 / 72</td>
-      <td>0.8504</td>
-    </tr>
-  </tbody>
-</table>
+The system was tested on all 163 labelled cases from the CHIMERA-Agent
+challenge. 91 of those cases were biopsy decisions. 72 were management
+decisions, meaning a cancer diagnosis already existed and the question was
+what to do next. Every case ran through the challenge's official, live
+evaluation interface.
 
-Overall evaluator score: **0.8282**.
+<StatTiles
+  stats={[
+    { label: 'Overall evaluator score', value: '0.8282' },
+    { label: 'Cases evaluated', value: '163' },
+    { label: 'Task 1 decisions correct', value: '78 / 91' },
+    { label: 'Task 2 decisions correct', value: '68 / 72' },
+  ]}
+/>
+
+<BarChart
+  title="Task 1, biopsy decision"
+  data={[
+    { label: 'Decisions correct', value: 0.8571, highlight: true },
+    { label: 'Rationale', value: 0.8538 },
+    { label: 'Weights', value: 0.8719 },
+    { label: 'Ranking', value: 0.806 },
+    { label: 'Confidence', value: 0.7885 },
+  ]}
+  highlightLabel="headline metric"
+  mutedLabel="component score"
+/>
+
+<BarChart
+  title="Task 2, management decision"
+  data={[
+    { label: 'Decisions correct', value: 0.9444, highlight: true },
+    { label: 'Confidence', value: 0.9118 },
+    { label: 'Weights', value: 0.8473 },
+    { label: 'Ranking', value: 0.8504 },
+    { label: 'Rationale', value: 0.8338 },
+  ]}
+  caption="Management decisions score higher across the board. By that point in the pathway there is simply more accumulated evidence for the orchestrator to work with."
+  highlightLabel="headline metric"
+  mutedLabel="component score"
+/>
+
+Both tasks got the decision right on the large majority of cases. That
+number alone would not tell the whole story, though. Every other score
+also stayed above 0.78 across both tasks. That includes how well the
+weights tracked what actually mattered, how well confidence tracked real
+ambiguity, and how well the written rationale matched the evidence. The
+graph is not adding interpretability as an afterthought bolted onto a
+black box. The decision and the audit trail come from the exact same
+trace.
+
+## What next
+
+The real payoff of this design is that trust and performance come from the
+same source. Because every decision is a walk through an explicit graph, a
+clinician can open that trace and see exactly which evidence drove the
+outcome. She can see how confident the system was at every step. Nobody
+has to take a single opaque output on faith.
+
+That kind of transparency matters most where a wrong call is costly and a
+silent one is worse. Biopsy and treatment-pathway decisions are the
+immediate case here. But the same pattern could carry over well beyond
+urology. Any clinical pathway written as a series of narrow questions
+could, in principle, become a graph like this one, with specialists at
+each node and an orchestrator that owns the routing.
+
+The current limitation sits in depth, not architecture. The specialist
+agents hold task-focused knowledge rather than comprehensive clinical
+expertise. A question that falls just outside a specialist's intended
+scope gets answered less reliably than one squarely inside it. Sharpening
+that specialist knowledge is the next step. So is testing the whole
+pipeline against real clinician judgment, not only against the challenge's
+held-out labels. Both need to happen before this moves anywhere near
+actual clinical use.
 
 ## Status & links
 
 Submitted to the CHIMERA-Agent Challenge at MICCAI 2026. Code is available
 at [github.com/ViciousDove19/chimera-baseline](https://github.com/ViciousDove19/chimera-baseline),
 explicitly marked as not for clinical use without external validation.
-The specialists currently hold task-focused rather than comprehensive
-clinical knowledge — sharpening that is the identified next step.

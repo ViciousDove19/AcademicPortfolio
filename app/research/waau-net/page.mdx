@@ -2,6 +2,7 @@ import { Stamp } from '@/components/notebook/stamp'
 import { MarginNote } from '@/components/notebook/margin-note'
 import { SketchWaveletDomain } from '@/components/notebook/sketches'
 import { BarChart } from '@/components/notebook/bar-chart'
+import { StatTiles } from '@/components/notebook/stat-tiles'
 
 export const metadata = {
   title:
@@ -20,75 +21,84 @@ export const metadata = {
 *Wavelet-domain adversarial adaptation for cross-cohort generalization in
 breast ultrasound tumor segmentation.*
 
-## In plain language
+## The gist
 
-Before building anything, this project asks a diagnostic question first:
-when a segmentation model trained on one hospital's scans fails on
-another's, *where does that failure actually live*? A radiomics analysis —
-650 features, checked for which ones differ significantly between three
-hospital cohorts — found that most of the divergence wasn't scattered
-evenly across the image. It concentrated in the wavelet domain: 60% of the
-features that differed significantly between cohorts came from
-wavelet-decomposed versions of the image, not the raw pixels.
+Before building anything, this project asks a diagnostic question first.
+When a segmentation model trained on one hospital's scans fails on
+another's, where does that failure actually live? A radiomics analysis
+went looking for the answer. It checked 650 image features across three
+hospital cohorts, hunting for which ones differed significantly between
+them. The divergence was not scattered evenly across the image. It
+concentrated in one place. Sixty percent of the features that differed
+significantly between cohorts came from wavelet-decomposed versions of the
+image, not from the raw pixels.
 
-So WAAU-Net doesn't try to scrub "domain information" out of the whole
-image at once, the way most adversarial domain-adaptation methods do.
-It decomposes the image into frequency bands first, and only normalises
-the bands the data pointed to.
+So WAAU-Net does not try to scrub domain information out of the whole
+image at once, the way most adversarial domain-adaptation methods do. It
+decomposes the image into frequency bands first. Then it normalises only
+the bands the data actually pointed to.
 
 <div className="not-prose my-6 max-w-xs">
   <SketchWaveletDomain />
 </div>
 
 <MarginNote className="text-lg">
-  the network wasn&rsquo;t told which bands to protect — it arrived at
-  almost exactly the split the radiomics analysis predicted
+  the network was never told which bands to protect. it arrived at almost
+  exactly the split the radiomics analysis predicted
 </MarginNote>
 
-## Overview
+## Research question
 
-Breast ultrasound segmentation models are usually trained and tested within
-a single hospital cohort, and lose accuracy when moved to another — cohorts
-differ simultaneously in scanner, acquisition protocol, and patient
-population, and that shift tends to hit underrepresented groups hardest.
-Existing domain-adaptation methods work in the spatial domain and suppress
-"domain information" as one undifferentiated whole, with no way to tell
-whether diagnostically useful structure got suppressed along with it.
+Breast-ultrasound segmentation models are usually trained and tested
+within one hospital cohort. Move that same model to a different hospital
+and its accuracy drops, sometimes badly. Cohorts differ in scanner, in
+acquisition protocol, and in patient population all at once, and that
+shift tends to hit underrepresented groups hardest.
 
-## Method
+Existing domain-adaptation methods try to fix this in the spatial domain.
+They suppress domain information as one undifferentiated whole. There is
+no way to tell, with that approach, whether diagnostically useful
+structure got suppressed right along with the noise. The real question
+this project asks is narrower and more answerable: instead of guessing
+where domain-specific noise lives in an image, can you find out directly,
+and act only on that part?
 
-Each image is passed through a discrete wavelet transform, producing four
-subbands (LL, LH, HL, HH). An Adaptive Wavelet Normalization (AWN) module
-learns, per subband, a gate that blends the raw signal with an
-instance-normalised version of it — a high gate keeps the raw signal, a low
-gate replaces it with the normalised form. The whole network — an Attention
-U-Net backbone reading the gated subbands — is trained jointly with a
-gradient-reversed discriminator that tries to guess which hospital an image
-came from; the encoder is pushed to make that guess fail. The intuition
-mirrors the radiomics finding: tumour localisation mostly lives in LL and
-LH (intensity contrast and true tissue edges), while HL and HH carry more
-of the cohort-varying texture and acquisition artifact — so selectively
-normalising only the high-frequency bands should strip cohort-specific
-noise without erasing the diagnostic signal.
+## Solution
 
-## Data
+Each image first passes through a discrete wavelet transform, which
+splits it into four subbands: LL, LH, HL, and HH. An Adaptive Wavelet
+Normalization module then learns a gate for each subband. That gate
+blends the raw signal with an instance-normalised version of it. A high
+gate value keeps the raw signal mostly intact. A low gate value replaces
+it with the normalised form instead.
 
-Three cohorts, restricted to malignant cases and balanced to 98 each:
-AIIMS New Delhi (410 images, 119 patients), the open-access BUSI cohort
-from Egypt (sampled to 98 from 153 eligible malignant images), and the
-open-access BrEaST cohort from Poland (98 of 256 patients). Evaluated with
-5-fold cross-validation internally, and leave-one-cohort-out for external,
-never-seen-cohort testing.
+The whole network, an Attention U-Net backbone reading these gated
+subbands, is trained jointly with a second network, a discriminator that
+tries to guess which hospital an image came from. The main encoder is
+pushed to make that guess fail. The intuition behind the design mirrors
+the radiomics finding directly. Tumour localisation mostly lives in the LL
+and LH bands, which capture intensity contrast and true tissue edges. The
+HL and HH bands carry more of the cohort-varying texture and acquisition
+artifact. Selectively normalising only the high-frequency bands should
+strip out cohort-specific noise without erasing the diagnostic signal
+underneath it.
 
 ## Results
 
-Internally, WAAU-Net is competitive with the strongest baseline (Dice 0.73
-vs. nnU-Net's 0.74) — the real difference shows up externally, on the
-held-out BrEaST cohort, where WAAU-Net holds the smallest internal→external
-gap (0.090) of any model tested:
+Three cohorts were used, restricted to malignant cases and balanced to 98
+images each: AIIMS New Delhi, the open-access BUSI cohort from Egypt, and
+the open-access BrEaST cohort from Poland. Internal performance was
+measured with 5-fold cross-validation. External performance used a
+leave-one-cohort-out setup, so the test cohort was never seen during
+training at all.
+
+Internally, WAAU-Net is competitive with the strongest baseline, scoring
+a Dice of 0.73 against nnU-Net's 0.74. The real difference shows up
+externally, on the held-out BrEaST cohort, where WAAU-Net holds the
+smallest internal-to-external gap of any model tested, at 0.090.
 
 <BarChart
-  title="Dice — external, held-out cohort (BrEaST)"
+  title="Dice, external held-out cohort (BrEaST)"
   data={[
     { label: 'WAAU-Net', value: 0.67, highlight: true },
     { label: 'nnU-Net', value: 0.63 },
@@ -100,34 +110,23 @@ gap (0.090) of any model tested:
   ]}
 />
 
-An ablation shows where that comes from — most of it is the adversarial
-training itself, not the wavelet targeting on its own:
+An ablation shows where that advantage actually comes from. Most of it
+traces back to the adversarial training itself, not to the wavelet
+targeting on its own.
 
-<table>
-  <thead>
-    <tr>
-      <th>Removed</th>
-      <th>External Dice</th>
-      <th>Internal Dice</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Adversarial discriminator</td>
-      <td>&minus;7 points</td>
-      <td>&minus;1 point</td>
-    </tr>
-    <tr>
-      <td>AWN normalisation</td>
-      <td>&minus;1 to &minus;2 points</td>
-      <td>&minus;1 to &minus;2 points</td>
-    </tr>
-  </tbody>
-</table>
+<StatTiles
+  stats={[
+    { label: 'Remove discriminator, external Dice', value: '-7 pts' },
+    { label: 'Remove discriminator, internal Dice', value: '-1 pt' },
+    { label: 'Remove AWN, external Dice', value: '-1 to -2 pts' },
+    { label: 'Remove AWN, internal Dice', value: '-1 to -2 pts' },
+  ]}
+/>
 
-And the payoff for the diagnostic detour at the start of this page: the AWN
-module's learned gate values, stable across every configuration, land
-almost exactly where the radiomics analysis predicted they should.
+And here is the payoff for the diagnostic detour this page started with.
+The AWN module's learned gate values stayed stable across every
+configuration tested, and they land almost exactly where the radiomics
+analysis predicted they should.
 
 <BarChart
   title="Learned AWN gate value by frequency subband"
@@ -142,11 +141,33 @@ almost exactly where the radiomics analysis predicted they should.
   mutedLabel="mostly normalised"
 />
 
+## What next
+
+The real value of this result is that it turns a guess into a targeted
+fix. Most domain-adaptation work suppresses domain information across an
+entire image and hopes the diagnostic signal survives. WAAU-Net instead
+starts from a measurement of exactly where cohort differences live, then
+builds a mechanism aimed only at that location. The fact that the
+network's own learned gates converge on almost the same split the
+radiomics analysis found beforehand is a strong sign that the targeting
+is real, not a coincidence of training.
+
+That kind of targeted normalisation should generalise past breast
+ultrasound. Any imaging setting where a model has to move between
+scanners, protocols, or populations faces the same underlying problem: a
+mix of genuinely useful structure and cohort-specific noise sitting in the
+same pixels. A frequency-domain measurement step before adaptation is a
+pattern that could transfer wherever that mix shows up.
+
+The honest limitation is scale. These cohorts are small, malignant-only,
+and the study cannot separate the effects of scanner, population, and
+acquisition protocol from one another, since all three vary together
+across cohorts. Broader validation, with more cohorts and enough cases to
+test benign and malignant findings separately, is the identified next
+step.
+
 ## Status & links
 
 Preprint submitted to *Biomedical Signal Processing and Control*, not yet
 peer-reviewed. Code is available at
 [github.com/ViciousDove19/WAAUNet](https://github.com/ViciousDove19/WAAUNet).
-By design, this study can't separate scanner, population, and protocol
-effects from one another, and the cohorts are small and malignant-only —
-broader, subgroup-level validation is the identified next step.

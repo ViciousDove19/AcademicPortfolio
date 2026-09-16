@@ -3,6 +3,7 @@ import { MarginNote } from '@/components/notebook/margin-note'
 import { SketchPeritumoral } from '@/components/notebook/sketches'
 import { BarChart } from '@/components/notebook/bar-chart'
 import { StatTiles } from '@/components/notebook/stat-tiles'
+import { Figure } from '@/components/notebook/figure'
 
 export const metadata = {
   title:
@@ -74,11 +75,25 @@ exists, it gets dilated outward by a few patches. That dilated band is the
 peritumoral ring, and it is the only part of the image PS-MAE masks during
 pretraining. Random patches never get touched.
 
+<Figure
+  src="/research/ps-mae/peritumoral-ring.webp"
+  alt="Four columns per sample: the original ultrasound image, the tumour segmentation, the derived masking regions (tumour interior, perimeter, and background ring), and the resulting masked input."
+  title="From tumour mask to masking regions, across three samples"
+  caption="Column (b) is the tumour segmentation the U-Net produces. Column (c) expands that boundary into the perimeter and background ring PS-MAE actually masks. Column (d) is what the encoder sees: everything inside that ring blanked out, the rest left as context."
+/>
+
 Instead of reconstructing raw pixel values inside that ring, the model
 reconstructs the Sobel edge-gradient response of the masked region. That
 shift matters, because edges emphasise boundary and texture structure,
 which is closer to what a radiologist actually looks at. Raw pixel values
 mostly just chase speckle.
+
+<Figure
+  src="/research/ps-mae/pixel-vs-sobel.webp"
+  alt="Two samples comparing the peritumoral ring against a raw-pixel reconstruction target and a Sobel edge-gradient reconstruction target."
+  title="What the model is asked to reconstruct: pixels versus edges"
+  caption="The pixel target (b) keeps every grey-level value inside the ring, speckle included. The Sobel target (c) keeps only edge structure, which is what actually distinguishes tumour margin from surrounding tissue."
+/>
 
 The encoder does not start from ImageNet weights either. It starts from
 USFM, a model already trained on ultrasound. That choice means training
@@ -161,6 +176,13 @@ beats either piece on its own.
 Second, attention rollout confirms the model is actually looking where it
 was trained to look. More of its attention lands inside the peritumoral
 ring than any baseline's does.
+
+<Figure
+  src="/research/ps-mae/attention-rollout.webp"
+  alt="Attention rollout heatmaps for four node-positive and node-negative cases, comparing PS-MAE against USFM pretrained, USF-MAE, DINOv2, and an ImageNet-pretrained ViT, with the peritumoral ring outlined in white."
+  title="Where each model's attention actually lands"
+  caption="PS-MAE's attention concentrates inside the outlined peritumoral ring more consistently than the generic baselines, whose brightest regions often sit outside it."
+/>
 
 <BarChart
   title="Share of attention inside the peritumoral ring"

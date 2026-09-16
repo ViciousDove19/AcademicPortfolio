@@ -3,6 +3,7 @@ import { MarginNote } from '@/components/notebook/margin-note'
 import { SketchWaveletDomain } from '@/components/notebook/sketches'
 import { BarChart } from '@/components/notebook/bar-chart'
 import { StatTiles } from '@/components/notebook/stat-tiles'
+import { Figure } from '@/components/notebook/figure'
 
 export const metadata = {
   title:
@@ -83,6 +84,14 @@ artifact. Selectively normalising only the high-frequency bands should
 strip out cohort-specific noise without erasing the diagnostic signal
 underneath it.
 
+<Figure
+  src="/research/waau-net/concept-diagram.svg"
+  alt="Three-stage concept diagram: Stage 1 radiomic problem analysis across three hospital cohorts finding that 60 percent of divergent features sit in the wavelet domain, Stage 2 the proposed wavelet decomposition and Adaptive Wavelet Normalization framework, Stage 3 the resulting clinical outcomes."
+  title="From radiomics finding to framework to clinical outcome"
+  background="paper"
+  caption="Stage 1 is the diagnostic radiomics analysis. Stage 2 is WAAU-Net itself: wavelet decomposition feeding Adaptive Wavelet Normalization, which keeps LL and LH at high attention and suppresses HL and HH, jointly trained against a gradient-reversed discriminator. Stage 3 is what that buys clinically."
+/>
+
 ## Results
 
 Three cohorts were used, restricted to malignant cases and balanced to 98
@@ -108,6 +117,13 @@ smallest internal-to-external gap of any model tested, at 0.090.
     { label: 'Attention U-Net', value: 0.5 },
     { label: 'U-Net++', value: 0.43 },
   ]}
+/>
+
+<Figure
+  src="/research/waau-net/gradcam.webp"
+  alt="Predicted segmentation masks and GradCAM activation maps for four ultrasound cases, comparing UNet, UNet++, AttentionUNet, TransUNet, nnUNet, DANN, and WAAU-Net against ground truth."
+  title="Predictions and GradCAM activations across four cases"
+  caption="WAAU-Net's activation consistently converges on one compact, anatomically plausible region, where several baselines spread activation across the image or split it across multiple areas."
 />
 
 An ablation shows where that advantage actually comes from. Most of it

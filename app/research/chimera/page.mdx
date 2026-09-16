@@ -1,8 +1,9 @@
 import { Stamp } from '@/components/notebook/stamp'
 import { MarginNote } from '@/components/notebook/margin-note'
-import { SketchAgentGraph, SketchPolicyPath } from '@/components/notebook/sketches'
+import { SketchAgentGraph } from '@/components/notebook/sketches'
 import { BarChart } from '@/components/notebook/bar-chart'
 import { StatTiles } from '@/components/notebook/stat-tiles'
+import { Figure } from '@/components/notebook/figure'
 
 export const metadata = {
   title: 'CHIMERA: Policy-orchestrated specialist agents for prostate-cancer decision support',
@@ -100,9 +101,13 @@ built-in fallback for exactly that case: retrieve the missing piece, order
 the prerequisite test, or follow a dedicated branch for an incomplete
 history.
 
-<div className="not-prose my-6 max-w-xs">
-  <SketchPolicyPath />
-</div>
+<Figure
+  src="/research/chimera/concept-diagram.svg"
+  alt="Diagram of the CHIMERA pipeline: a policy-graph snippet resolving one active node through a radiology specialist, then the completed path producing variable weights, a confidence level, and a rationale."
+  title="Walking one node of the policy graph, end to end"
+  background="paper"
+  caption="A single node resolved from graph to verdict to output: the specialist answers within its permitted evidence, the orchestrator follows the matching edge, and the completed path yields weights, a confidence level, and a grounded rationale."
+/>
 
 This design earns clinical trust in three concrete ways.
 

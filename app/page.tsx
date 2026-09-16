@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import Link from 'next/link'
 import { Spotlight } from '@/components/ui/spotlight'
@@ -67,6 +68,17 @@ export default function Personal() {
     ? { hidden: {}, visible: {} }
     : VARIANTS_SECTION
 
+  const [today, setToday] = useState('')
+  useEffect(() => {
+    setToday(
+      new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+    )
+  }, [])
+
   return (
     <motion.main
       className="space-y-20"
@@ -77,17 +89,13 @@ export default function Personal() {
       {/* Hero: the open question, in one screen */}
       <motion.section variants={section} transition={TRANSITION_SECTION}>
         <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-faint">
-          Notebook, entry 01
+          Chennai, {today}
         </p>
-        <Stamp className="mt-3">The question behind the work</Stamp>
+        <Stamp className="mt-3">The central research question</Stamp>
         <h1 className="mt-3 font-serif text-2xl leading-snug text-ink sm:text-3xl">
           What does it take for a machine to meaningfully represent a
           biological system?
         </h1>
-        <MarginNote className="mt-2 block text-base">
-          not answered here, just the thing everything below is in
-          service of
-        </MarginNote>
 
         <RuleDivider className="my-6" />
 

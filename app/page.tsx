@@ -17,7 +17,6 @@ import {
   SketchARHeadset,
 } from '@/components/notebook/sketches'
 import {
-  HERO_STATEMENT,
   BIO,
   RESEARCH,
   PUBLICATIONS,
@@ -81,10 +80,9 @@ export default function Personal() {
           Notebook, entry 01
         </p>
         <h1 className="mt-3 font-serif text-2xl leading-snug text-ink sm:text-3xl">
-          What can biological systems teach machines — and what can the
-          representations they learn teach us back about biology?
+          What does it take for a machine to meaningfully represent a
+          biological system?
         </h1>
-        <p className="mt-4 font-[450] text-ink">{HERO_STATEMENT}</p>
         <div className="mt-4 space-y-4">
           {BIO.split('\n\n').map((paragraph, index) => (
             <p key={index} className="text-ink-soft">

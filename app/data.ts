@@ -48,12 +48,11 @@ type Publication = {
 export const HERO_TITLE =
   'Project Research Scientist · Health Informatics and Imaging Lab, IIT Madras'
 
-export const HERO_STATEMENT =
-  'I work on modelling biological intelligence: representation learning for medical imaging, and agentic systems that reason over multimodal clinical data.'
+export const BIO = `I'm a Project Research Scientist at the Health Informatics and Imaging Lab at IIT Madras, working with Prof. Pradeeba Sridar on ICMR-funded research in medical image analysis and agentic AI for breast cancer. My current work spans designing pretraining objectives for self-supervised representation learning, building agentic AI systems to mimic clinical workflows, and developing compact models for real-world deployment.
 
-export const BIO = `I'm a Project Research Scientist at the Health Informatics and Imaging Lab at IIT Madras, working with Prof. Pradeeba Sridar on ICMR-funded research in medical image analysis. My work centres on self-supervised representation learning for ultrasound — designing pretraining objectives around the physics and anatomy of the data rather than applying generic SSL — and, more recently, on agentic systems that reason over multimodal clinical evidence.
+I am deeply curious about learning how biological or natural systems work. I find a lot of joy in studying complex biomedical data to derive insights. I am interested in translating these insights into building intelligent machines that can be understood mechanistically. My long-term goal is to help move healthcare from reactive care toward preventive care.
 
-I'm interested more broadly in modelling biological intelligence: what biological systems can teach us about building better learning machines, and what learned representations can tell us about biology. Before returning to research I worked on product analytics at Ather Energy and computer vision and reinforcement learning at Samsung Research. I hold a dual B.Tech + M.Tech in Engineering Design from IIT Madras.`
+Previously, I worked at Ather Energy, where I analyzed terabytes of telemetry data. I also worked as a research intern at Samsung Research Institute. I hold a dual B.Tech. and M.Tech. degree in Engineering Design from IIT Madras. I graduated in 2023 with a master's specialization in Biomedical Design.`
 
 // TODO: fill in arXiv/code links once available.
 export const RESEARCH: ResearchProject[] = [

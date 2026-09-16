@@ -61,9 +61,10 @@ export const RESEARCH: ResearchProject[] = [
     name: 'CHIMERA',
     slug: 'chimera',
     subtitle: 'Policy-orchestrated specialist agents for prostate-cancer decision support',
-    question: 'Can an agent be evaluated on how it reasoned, not only on its final answer?',
+    question:
+      'How can we build an agentic AI system that recommends biopsy when clinical evidence is incomplete or conflicting?',
     description:
-      'A clinical guideline is turned into an explicit, executable policy graph: narrow specialist agents read only the evidence relevant to one node at a time, and an orchestrator — not the specialists — walks the graph to a decision. Every step produces an auditable trace: which variables mattered, how confident the call was, and a rationale checked against the evidence before it is shown.',
+      'We translate a clinical guideline into an executable policy graph. Each node poses a focused clinical question. Specialist agents evaluate the available evidence to answer these questions. An orchestrator traverses the graph and coordinates the agents to reach a decision. Every step produces an auditable trace. This trace shows which variables influenced the decision and how confident the system was.',
     status: 'MICCAI 2026 Challenge submission',
     links: [{ label: 'Code', href: 'https://github.com/ViciousDove19/chimera-baseline' }],
   },
@@ -73,9 +74,9 @@ export const RESEARCH: ResearchProject[] = [
     slug: 'ps-mae',
     subtitle:
       'A clinically-informed peritumoral masked autoencoder for axillary lymph node status',
-    question: 'Does the evidence for spread sit inside the tumour, or in the tissue around it?',
+    question: 'Can biological knowledge guide pretraining for metastasis prediction?',
     description:
-      'Nodal status in breast cancer is decided by tissue that sits outside the tumour, but most imaging models are trained to attend to the lesion itself. PS-MAE masks only the peritumoral ring during pretraining and reconstructs its edge structure rather than raw pixels, so the encoder is forced to represent the margin instead of treating it as background.',
+      'Predicting axillary lymph node metastasis is difficult because labelled datasets are small. Prior research suggests that the tissue surrounding a tumour or lymph node contains signals associated with metastasis. We use this biological insight to design a pretraining objective for breast ultrasound. A ViT-B model learns to predict the Sobel edge response within masked peritumoral regions. The resulting encoder outperforms state-of-the-art methods for predicting metastasis on small datasets.',
     status: 'Under review, IEEE JBHI',
   },
   {
@@ -83,9 +84,10 @@ export const RESEARCH: ResearchProject[] = [
     name: 'Tiny ViT Distillation',
     slug: 'tiny-vit-distillation',
     subtitle: 'A 5.7M-parameter ultrasound encoder for point-of-care deployment',
-    question: 'How much of a compression pipeline is actually necessary?',
+    question:
+      'How can we compress an ultrasound foundation model without sacrificing diagnostic accuracy?',
     description:
-      'Ultrasound foundation models converge on 86M-parameter backbones that never run on point-of-care hardware. This project distils one down to a 5.7M-parameter student with a deliberately minimal recipe — no curated coresets, no dynamic weighting — to find out which parts of a heavier distillation pipeline were load-bearing, and which task families survive compression at all.',
+      'We distil knowledge from ultrasound foundation models into small ViT models using a JEPA-style latent prediction objective. During distillation, we observe a collapse in the effective rank of the learned representations. This collapse limits the diversity of information retained by the student model. We address it by encouraging the model to preserve orthogonal information. The resulting models match or outperform their teachers on several downstream tasks.',
     status: 'Paper plan, target: Computers in Biology and Medicine',
   },
   {
@@ -93,9 +95,9 @@ export const RESEARCH: ResearchProject[] = [
     name: 'Decoder-Free Segmentation',
     slug: 'decoder-free-segmentation',
     subtitle: 'A decoder-free soft-token segmenter for point-of-care breast ultrasound',
-    question: 'Does a segmentation model actually need a decoder, or is that just convention?',
+    question: 'Can a transformer segment tumours without a decoder?',
     description:
-      'Segmentation conventionally means an encoder plus a decoder. This project replaces the decoder with a single linear head over the ViT’s own patch tokens, trained to predict a continuous per-patch tumour-area fraction instead of a binary label — and asks how much of the usual decoder machinery that soft, fine-grained token head actually makes redundant.',
+      'Most segmentation models pair an encoder with a dedicated decoder. We replace the decoder with a single linear head applied directly to the ViT’s patch tokens. The head predicts the fraction of tumour area within each patch instead of assigning a binary label. With this design, a tiny ViT can localise tumours while achieving performance comparable to a ViT-B model with a decoder.',
     status: 'Paper scaffold, in preparation',
   },
   {
@@ -103,9 +105,10 @@ export const RESEARCH: ResearchProject[] = [
     name: 'WAAU-Net',
     slug: 'waau-net',
     subtitle: 'Wavelet-domain adversarial adaptation for cross-cohort segmentation',
-    question: 'Why does a segmentation model trained on one population fail on another?',
+    question:
+      'Can we build fair models without erasing meaningful biological differences between populations?',
     description:
-      'A radiomics analysis found that most of what differs between hospital cohorts concentrates in the wavelet domain, not the raw image. WAAU-Net acts on that finding directly: it decomposes each image into frequency subbands and learns, per subband, how much to normalise away — trained jointly with a cohort discriminator so the encoder can’t tell which hospital an image came from.',
+      'Many domain generalisation methods remove signals that predict cohort membership. However, some differences between cohorts may reflect meaningful biological variation rather than acquisition artefacts. Our radiomics analysis found that most cohort-level differences were concentrated in the wavelet domain rather than the raw image. WAAU-Net acts on this finding by decomposing each image into frequency subbands. It learns how strongly each subband should be normalised. A population discriminator encourages generalisation across cohorts while the selective normalisation preserves useful information.',
     status: 'Preprint submitted, Biomedical Signal Processing and Control',
   },
 ]

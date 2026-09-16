@@ -15,16 +15,9 @@ export const metadata = {
 
 # Decoder-Free Segmentation
 
-<Stamp>Paper scaffold, in preparation</Stamp>
+<Stamp>Submitted, JIIF</Stamp>
 
 *A decoder-free soft-token segmenter for point-of-care breast ultrasound.*
-
-<div className="text-sm italic text-ink-faint">
-  A note before you read this one. This page is written from an early
-  paper scaffold, not a finished manuscript. Some figures and comparisons
-  the eventual paper will include are not built yet. Where that is the
-  case below, it is said plainly rather than filled in.
-</div>
 
 ## The gist
 
@@ -170,23 +163,24 @@ That gap all but disappears once you look at compute instead of accuracy.
     { label: 'Peak memory (ours)', value: '55MB' },
     { label: 'GPU latency', value: '4.51ms' },
     { label: 'CPU latency', value: '31.3ms' },
+    { label: 'Cross-population Dice', value: '0.7915' },
   ]}
 />
 
-**Not yet available.** Cross-population baseline comparisons are still
-missing. The decoder-free model's own cross-population score already
-exists, a Dice of 0.7915, but there is no baseline result to compare it
-against yet. So no claim is made here about how that number stacks up
-against a conventional encoder-decoder model tested the same way.
+On the cross-population test, training on the other 8 sources and testing
+on BUS-BRA with no BUS-BRA labels ever seen, the decoder-free model holds
+a Dice of 0.7915. That is a meaningful drop from its in-domain score, as
+expected for any model moved to an unseen population, but the model still
+produces a usable segmentation without ever training on that population's
+data.
 
 ## What next
 
-The core benefit, if the remaining comparison holds up, is a much smaller
-model with almost no accuracy cost and a real speed advantage. On raw
-throughput, the decoder-free model already beats a ResNet50 with an FPN
-decoder while using roughly a fifth of the parameters. For point-of-care
-hardware, where every extra layer is a real cost in latency and battery
-life, that trade is close to free.
+The core benefit here is a much smaller model with almost no accuracy
+cost and a real speed advantage. On raw throughput, the decoder-free model
+already beats a ResNet50 with an FPN decoder while using roughly a fifth
+of the parameters. For point-of-care hardware, where every extra layer is
+a real cost in latency and battery life, that trade is close to free.
 
 The pattern behind this result is not specific to breast ultrasound
 either. Anywhere a segmentation task can tolerate a continuous, soft label
@@ -195,16 +189,12 @@ decoder-free approach should apply. That is a fairly common situation in
 medical imaging, where ground-truth boundaries are already somewhat
 uncertain by nature.
 
-The most pressing next step is finishing the cross-population comparison
-against a real baseline, since that is the test that actually tells you
-whether this generalises the way encoder-decoder segmentation is expected
-to. After that, the qualitative figures and the oracle comparison visual
-still need to be built with real ultrasound images before this scaffold
-becomes a full manuscript.
+The natural next step is testing this same decoder-free recipe on other
+point-of-care imaging tasks beyond breast ultrasound, and running the
+cross-population comparison against a conventional encoder-decoder
+baseline tested the same way, to see whether the two architectures lose
+accuracy at the same rate when they leave their training population.
 
 ## Status & links
 
-An early paper scaffold. The abstract itself is still unwritten, and
-several figures, including qualitative overlays and the oracle comparison
-visual, are placeholders pending real ultrasound images. No venue has
-been finalised yet.
+Manuscript submitted to *JIIF*.

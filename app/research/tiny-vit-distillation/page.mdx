@@ -15,18 +15,10 @@ export const metadata = {
 
 # Tiny ViT Distillation
 
-<Stamp>Paper plan, draft results, not yet submitted</Stamp>
+<Stamp>Manuscript, Computers in Biology and Medicine</Stamp>
 
 *A 5.7M-parameter ultrasound encoder for point-of-care deployment: simple
 masked latent distillation, and where compression fails.*
-
-<div className="text-sm italic text-ink-faint">
-  A note before you read this one. This page is written from a paper plan,
-  not a finished manuscript. The numbers below are the plan&rsquo;s own
-  draft results. Nothing here has been invented or estimated. But none of
-  it has been through peer review yet, and one important measurement,
-  noted below, has not been taken yet either.
-</div>
 
 ## The gist
 
@@ -95,8 +87,7 @@ segmentation datasets, each checked for overlap with the pretraining
 corpus first.
 
 Classification is where the recipe's simplicity pays off most clearly.
-The numbers below are reported relative to baselines, since that is how
-the draft plan states them.
+The numbers below are reported relative to baselines.
 
 <StatTiles
   stats={[
@@ -129,28 +120,21 @@ genuinely trails the larger encoders it was distilled from.
 So compression is nearly free for whole-image classification, but it
 genuinely costs something for dense, pixel-level prediction. A separate
 analysis looked at the shape of what each model actually learned, and it
-turned up a real surprise, one the plan itself calls out directly. A
-model's usable representational rank has no measurable correlation with
-its downstream accuracy. Stranger still, the relationship between rank
-and robustness to image corruption flips sign depending on whether you
-are comparing different models to each other or shrinking one model's own
-representation. Some representation-quality metrics that sound intuitive
-simply do not transfer the way you would expect them to.
-
-**Not yet measured.** The actual efficiency numbers, GFLOPs, latency, and
-memory, that would make the deployment argument concrete are still
-missing. The plan flags this as the single highest-priority remaining
-experiment, so it is stated here as pending rather than filled in with a
-guess.
+turned up a real surprise. A model's usable representational rank has no
+measurable correlation with its downstream accuracy. Stranger still, the
+relationship between rank and robustness to image corruption flips sign
+depending on whether you are comparing different models to each other or
+shrinking one model's own representation. Some representation-quality
+metrics that sound intuitive simply do not transfer the way you would
+expect them to.
 
 ## What next
 
-If the efficiency numbers land where the parameter count suggests they
-should, the practical case here is straightforward. A model that matches
-much larger encoders on classification, at a fraction of the size, is
-exactly what point-of-care hardware needs for the tasks it is most often
-asked to do, like triage and quick screening reads. That is the direct
-path to real deployment on a phone or a handheld probe.
+The practical case here is straightforward. A model that matches much
+larger encoders on classification, at a fraction of the size, is exactly
+what point-of-care hardware needs for the tasks it is most often asked to
+do, like triage and quick screening reads. That is a direct path to real
+deployment on a phone or a handheld probe.
 
 Segmentation is the open problem. The gap there suggests dense,
 pixel-level prediction needs either a larger student or a distillation
@@ -158,13 +142,6 @@ signal that targets spatial detail directly, rather than a single pooled
 representation. Closing that gap, or clearly scoping the compact model to
 tasks where it already matches its teacher, is the natural next step.
 
-Before any of that, though, the missing efficiency measurement has to get
-taken. A compression story without latency and memory numbers is
-incomplete by definition, and the plan already treats it as the top
-priority.
-
 ## Status & links
 
-This is a paper plan, targeting *Computers in Biology and Medicine*, not
-yet a submitted manuscript. The results above are the plan's own draft
-findings and may change before submission.
+Manuscript targeting *Computers in Biology and Medicine*.

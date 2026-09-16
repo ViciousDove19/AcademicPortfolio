@@ -79,11 +79,22 @@ export default function Personal() {
         <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-faint">
           Notebook, entry 01
         </p>
+        <Stamp className="mt-3">The question behind the work</Stamp>
         <h1 className="mt-3 font-serif text-2xl leading-snug text-ink sm:text-3xl">
           What does it take for a machine to meaningfully represent a
           biological system?
         </h1>
-        <div className="mt-4 space-y-4">
+        <MarginNote className="mt-2 block text-base">
+          not answered here, just the thing everything below is in
+          service of
+        </MarginNote>
+
+        <RuleDivider className="my-6" />
+
+        <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-faint">
+          About me
+        </p>
+        <div className="mt-3 space-y-4">
           {BIO.split('\n\n').map((paragraph, index) => (
             <p key={index} className="text-ink-soft">
               {paragraph}

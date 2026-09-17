@@ -18,6 +18,7 @@ import {
 import { RuleDivider } from '@/components/notebook/rule-divider'
 import { MarginNote } from '@/components/notebook/margin-note'
 import { PersonalPhoto } from '@/components/notebook/personal-photo'
+import { cn } from '@/lib/utils'
 
 const VARIANTS_CONTAINER = {
   hidden: { opacity: 0 },
@@ -44,17 +45,21 @@ function InterestEntry({
   label,
   children,
   photos,
+  photosClassName = 'flex flex-wrap gap-6',
+  photoClassName = 'w-40 sm:w-48',
 }: {
   label: string
   children: React.ReactNode
   photos?: Photo[]
+  photosClassName?: string
+  photoClassName?: string
 }) {
   return (
     <div className="space-y-1 px-1">
       <h3 className="font-serif text-base font-medium text-ink">{label}</h3>
       <p className="text-ink-soft">{children}</p>
       {photos && photos.length > 0 && (
-        <div className="not-prose flex flex-wrap gap-6 pt-4 pb-2">
+        <div className={cn('not-prose pt-4 pb-2', photosClassName)}>
           {photos.map((photo, index) => (
             <PersonalPhoto
               key={photo.src}
@@ -62,7 +67,7 @@ function InterestEntry({
               alt={photo.alt}
               caption={photo.caption}
               rotate={index % 2 === 0 ? -2 : 2}
-              className="w-40 sm:w-48"
+              className={photoClassName}
             />
           ))}
         </div>
@@ -102,7 +107,12 @@ export default function AboutPage() {
         <h2 className="mb-5 font-serif text-lg font-medium text-ink">Personally</h2>
 
         <div className="flex flex-col gap-6">
-          <InterestEntry label="Reading" photos={[ABOUT_READING_PHOTO]}>
+          <InterestEntry
+            label="Reading"
+            photos={[ABOUT_READING_PHOTO]}
+            photosClassName="flex"
+            photoClassName="w-full max-w-md sm:max-w-lg"
+          >
             {ABOUT_READING}
           </InterestEntry>
 
@@ -118,11 +128,21 @@ export default function AboutPage() {
             {ABOUT_GAMEDEV_INTRO}
           </InterestEntry>
 
-          <InterestEntry label="Trekking" photos={ABOUT_TREKKING_PHOTOS}>
+          <InterestEntry
+            label="Trekking"
+            photos={ABOUT_TREKKING_PHOTOS}
+            photosClassName="grid grid-cols-3 gap-3 sm:gap-4 max-w-sm sm:max-w-md mx-auto"
+            photoClassName="w-full"
+          >
             {ABOUT_TREKKING}
           </InterestEntry>
 
-          <InterestEntry label="Art" photos={ABOUT_ART_PHOTOS}>
+          <InterestEntry
+            label="Art"
+            photos={ABOUT_ART_PHOTOS}
+            photosClassName="grid grid-cols-2 gap-4 max-w-[15rem] sm:max-w-xs mx-auto"
+            photoClassName="w-full"
+          >
             {ABOUT_ART}
           </InterestEntry>
 

@@ -260,7 +260,7 @@ export const ABOUT_READING = `I love reading. Growing up, my favourite activity 
 export const ABOUT_READING_PHOTO: PersonalPhoto = {
   src: '/about/photos/reading.webp',
   alt: 'Reading',
-  caption: '[Caption placeholder]',
+  caption: 'Some of my books with my dog Oscar',
 }
 
 export const ABOUT_GAMING = `Video games were another important part of my childhood. I believe they have immense potential as a storytelling medium. They can change how we think and experience another person's perspective. We can design them as empathy machines. We can also use them to develop cognitive skills.`
@@ -293,17 +293,17 @@ export const ABOUT_TREKKING_PHOTOS: PersonalPhoto[] = [
   {
     src: '/about/photos/kuari-pass-trekking.webp',
     alt: 'Trekking at Kuari Pass',
-    caption: '[Caption placeholder — Kuari Pass]',
+    caption: 'Kuari Pass Range',
   },
   {
     src: '/about/photos/sleeping-buddha-trekking.webp',
     alt: 'Trekking near the Sleeping Buddha viewpoint',
-    caption: '[Caption placeholder — Sleeping Buddha viewpoint]',
+    caption: 'Facing the Sleeping Buddha',
   },
   {
     src: '/about/photos/yak-trekking.webp',
     alt: 'A yak encountered while trekking',
-    caption: '[Caption placeholder — the yak]',
+    caption: 'A yak chilling against the Everest mountain range',
   },
 ]
 
@@ -313,12 +313,12 @@ export const ABOUT_ART_PHOTOS: PersonalPhoto[] = [
   {
     src: '/about/photos/egg-painting.webp',
     alt: 'A painting of an egg',
-    caption: '[Caption placeholder]',
+    caption: 'Acrylics',
   },
   {
     src: '/about/photos/trees-painting.webp',
     alt: 'A painting of trees',
-    caption: '[Caption placeholder]',
+    caption: 'Watercolor',
   },
 ]
 

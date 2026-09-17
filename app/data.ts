@@ -146,7 +146,8 @@ export const PUBLICATIONS: Publication[] = [
   },
   {
     id: 'pub-iceccme',
-    title: 'ICECCME paper',
+    title:
+      'Region of Interest Matters: How Input Region and Feature Extractor Choice Interact for Axillary Lymph Node Metastasis Prediction from Breast Ultrasound',
     venue: 'ICECCME',
     year: '2026',
     status: 'peer-reviewed',

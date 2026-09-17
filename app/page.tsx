@@ -285,7 +285,7 @@ export default function Personal() {
           })}
         </div>
         <div className="mt-3 px-1">
-          <MarginNote className="text-lg">see full lab notebook →</MarginNote>{' '}
+          <MarginNote className="text-lg">See complete CV →</MarginNote>{' '}
           <Link href="/experience" className="text-sm text-ink-soft underline decoration-rule">
             View full experience
           </Link>

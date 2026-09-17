@@ -2,14 +2,22 @@
 import { motion, useReducedMotion } from 'motion/react'
 import {
   ABOUT_PROFESSIONAL,
-  ABOUT_PERSONAL_INTRO,
-  ABOUT_FOOTBALL,
   ABOUT_READING,
+  ABOUT_READING_PHOTO,
+  ABOUT_GAMING,
+  GAMING_FAVOURITES,
   ABOUT_GAMEDEV_INTRO,
+  ABOUT_TREKKING,
+  ABOUT_TREKKING_PHOTOS,
+  ABOUT_ART,
+  ABOUT_ART_PHOTOS,
+  ABOUT_GUITAR,
+  ABOUT_FOOTBALL,
   PERSONAL_GAMES,
 } from '../data'
 import { RuleDivider } from '@/components/notebook/rule-divider'
 import { MarginNote } from '@/components/notebook/margin-note'
+import { PersonalPhoto } from '@/components/notebook/personal-photo'
 
 const VARIANTS_CONTAINER = {
   hidden: { opacity: 0 },
@@ -30,17 +38,35 @@ const TRANSITION_SECTION = {
   duration: 0.3,
 }
 
+type Photo = { src: string; alt: string; caption: string }
+
 function InterestEntry({
   label,
   children,
+  photos,
 }: {
   label: string
   children: React.ReactNode
+  photos?: Photo[]
 }) {
   return (
     <div className="space-y-1 px-1">
       <h3 className="font-serif text-base font-medium text-ink">{label}</h3>
       <p className="text-ink-soft">{children}</p>
+      {photos && photos.length > 0 && (
+        <div className="not-prose flex flex-wrap gap-6 pt-4 pb-2">
+          {photos.map((photo, index) => (
+            <PersonalPhoto
+              key={photo.src}
+              src={photo.src}
+              alt={photo.alt}
+              caption={photo.caption}
+              rotate={index % 2 === 0 ? -2 : 2}
+              className="w-40 sm:w-48"
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -61,19 +87,48 @@ export default function AboutPage() {
 
       <motion.section variants={section} transition={TRANSITION_SECTION}>
         <h2 className="mb-3 font-serif text-lg font-medium text-ink">Professionally</h2>
-        <p className="text-ink-soft">{ABOUT_PROFESSIONAL}</p>
+        <div className="space-y-4">
+          {ABOUT_PROFESSIONAL.split('\n\n').map((paragraph, index) => (
+            <p key={index} className="text-ink-soft">
+              {paragraph}
+            </p>
+          ))}
+        </div>
       </motion.section>
 
       <RuleDivider />
 
       <motion.section variants={section} transition={TRANSITION_SECTION}>
-        <h2 className="mb-3 font-serif text-lg font-medium text-ink">Personally</h2>
-        <p className="mb-6 text-ink-soft">{ABOUT_PERSONAL_INTRO}</p>
+        <h2 className="mb-5 font-serif text-lg font-medium text-ink">Personally</h2>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-6">
+          <InterestEntry label="Reading" photos={[ABOUT_READING_PHOTO]}>
+            {ABOUT_READING}
+          </InterestEntry>
+
+          <InterestEntry label="Video games">
+            {ABOUT_GAMING} Some of my favourites are{' '}
+            {GAMING_FAVOURITES.map((title, index) => (
+              <span key={title}>
+                {index > 0 && (index === GAMING_FAVOURITES.length - 1 ? ', and ' : ', ')}
+                <em>{title}</em>
+              </span>
+            ))}
+            {'. '}
+            {ABOUT_GAMEDEV_INTRO}
+          </InterestEntry>
+
+          <InterestEntry label="Trekking" photos={ABOUT_TREKKING_PHOTOS}>
+            {ABOUT_TREKKING}
+          </InterestEntry>
+
+          <InterestEntry label="Art" photos={ABOUT_ART_PHOTOS}>
+            {ABOUT_ART}
+          </InterestEntry>
+
+          <InterestEntry label="Guitar">{ABOUT_GUITAR}</InterestEntry>
+
           <InterestEntry label="Football">{ABOUT_FOOTBALL}</InterestEntry>
-          <InterestEntry label="Reading">{ABOUT_READING}</InterestEntry>
-          <InterestEntry label="Making games">{ABOUT_GAMEDEV_INTRO}</InterestEntry>
         </div>
       </motion.section>
 
@@ -82,18 +137,25 @@ export default function AboutPage() {
       <motion.section variants={section} transition={TRANSITION_SECTION}>
         <h2 className="mb-5 font-serif text-lg font-medium text-ink">Games I&rsquo;ve made</h2>
         <div className="flex flex-col gap-3">
-          {PERSONAL_GAMES.map((game, index) => (
-            <a
-              key={index}
-              href={game.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="paper-panel block rounded-lg p-4 transition-colors hover:border-accent sm:p-5"
-            >
-              <h3 className="font-serif text-base font-medium text-ink">{game.title}</h3>
-              <p className="text-sm text-ink-soft">{game.description}</p>
-            </a>
-          ))}
+          {PERSONAL_GAMES.map((game, index) =>
+            game.link ? (
+              <a
+                key={index}
+                href={game.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="paper-panel block rounded-lg p-4 transition-colors hover:border-accent sm:p-5"
+              >
+                <h3 className="font-serif text-base font-medium text-ink">{game.title}</h3>
+                <p className="text-sm text-ink-soft">{game.description}</p>
+              </a>
+            ) : (
+              <div key={index} className="paper-panel block rounded-lg p-4 sm:p-5">
+                <h3 className="font-serif text-base font-medium text-ink">{game.title}</h3>
+                <p className="text-sm text-ink-soft">{game.description}</p>
+              </div>
+            ),
+          )}
         </div>
         <div className="mt-3 px-1">
           <MarginNote>more to come, probably</MarginNote>

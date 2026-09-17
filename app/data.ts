@@ -242,30 +242,86 @@ export const EMAIL = 'rautchinmay19@gmail.com'
 type PersonalGame = {
   title: string
   description: string
-  link: string
+  link?: string
 }
 
-// TODO: replace every [placeholder] below with real content — this page
-// is scaffolding only, content pass pending.
-export const ABOUT_PROFESSIONAL = `[Placeholder — the fuller "about me" professional narrative goes here. Can start from the homepage bio and expand: how you got into research, what drives the work, where you see it going.]`
+type PersonalPhoto = {
+  src: string
+  alt: string
+  caption: string
+}
 
-export const ABOUT_PERSONAL_INTRO = `[Placeholder — a sentence or two bridging from "the work" to "the person." e.g. Outside the lab, here's what takes up my time.]`
+export const ABOUT_PROFESSIONAL = `I have always been motivated by the joy of learning and the joy of creating. I find the process of observing data and forming hypotheses deeply satisfying. I also enjoy designing experiments that can support or challenge those hypotheses. Fortunately, I have been able to find work that rewards this way of thinking.
 
-export const ABOUT_FOOTBALL = `[Placeholder — a sentence or two about football: team you support, do you play, how long you've followed it.]`
+At this stage, I want to further develop my identity as a researcher. I hope to pursue a PhD that allows me to devote sustained time and energy to a question that can support years of inquiry.`
 
-export const ABOUT_READING = `[Placeholder — a sentence or two about reading: favorite genres, authors, or a book or two worth naming.]`
+export const ABOUT_READING = `I love reading. Growing up, my favourite activity was visiting the public library while my mom shopped for groceries. My habit of hoarding books eventually led me to invest in e-readers. I currently use an 11th-generation Kindle Paperwhite. That has not stopped me from treating book buying as a separate hobby.`
 
-export const ABOUT_GAMEDEV_INTRO = `[Placeholder — a sentence or two introducing your game-making hobby before the list below: what draws you to it, tools you use, how long you've been doing it.]`
+export const ABOUT_READING_PHOTO: PersonalPhoto = {
+  src: '/about/photos/reading.webp',
+  alt: 'Reading',
+  caption: '[Caption placeholder]',
+}
+
+export const ABOUT_GAMING = `Video games were another important part of my childhood. I believe they have immense potential as a storytelling medium. They can change how we think and experience another person's perspective. We can design them as empathy machines. We can also use them to develop cognitive skills.`
+
+export const GAMING_FAVOURITES = [
+  'Red Dead Redemption 2',
+  'The Last of Us',
+  'Hollow Knight',
+  'Cuphead',
+]
+
+export const ABOUT_GAMEDEV_INTRO = `I have also made a couple of video games. I hope to make many more in the future.`
 
 export const PERSONAL_GAMES: PersonalGame[] = [
   {
-    title: '[Game title]',
-    description: '[One-line description of the game — genre, premise, what makes it yours.]',
-    link: '#',
+    title: 'The Maze of Malazzar',
+    description: 'A game I made — playable at the link below.',
+    link: 'https://viciousdove19.itch.io/the-maze-of-malazzar',
   },
   {
-    title: '[Game title]',
-    description: '[One-line description of the game — genre, premise, what makes it yours.]',
-    link: '#',
+    title: 'Chase and Capture',
+    description:
+      'A version of Scotland Yard set on the IIT Madras campus. It is no longer available online.',
   },
 ]
+
+export const ABOUT_TREKKING = `I also enjoy trekking and spending time in nature. I have been fortunate to spend some beautiful days climbing in the Himalayas. Few experiences compare to witnessing the scale and beauty of the mountains firsthand.`
+
+export const ABOUT_TREKKING_PHOTOS: PersonalPhoto[] = [
+  {
+    src: '/about/photos/kuari-pass-trekking.webp',
+    alt: 'Trekking at Kuari Pass',
+    caption: '[Caption placeholder — Kuari Pass]',
+  },
+  {
+    src: '/about/photos/sleeping-buddha-trekking.webp',
+    alt: 'Trekking near the Sleeping Buddha viewpoint',
+    caption: '[Caption placeholder — Sleeping Buddha viewpoint]',
+  },
+  {
+    src: '/about/photos/yak-trekking.webp',
+    alt: 'A yak encountered while trekking',
+    caption: '[Caption placeholder — the yak]',
+  },
+]
+
+export const ABOUT_ART = `I am a great admirer of art. I believe that creating art is one of the purest forms of self-expression. I occasionally work with acrylics and watercolours to paint an image I have in mind. I find the process of layering paint and watching a composition emerge deeply calming.`
+
+export const ABOUT_ART_PHOTOS: PersonalPhoto[] = [
+  {
+    src: '/about/photos/egg-painting.webp',
+    alt: 'A painting of an egg',
+    caption: '[Caption placeholder]',
+  },
+  {
+    src: '/about/photos/trees-painting.webp',
+    alt: 'A painting of trees',
+    caption: '[Caption placeholder]',
+  },
+]
+
+export const ABOUT_GUITAR = `I am also an amateur classical guitarist. I play with more heart than steady hands.`
+
+export const ABOUT_FOOTBALL = `I follow football closely and enjoy playing it too. My friends have gradually moved to different cities and countries, so finding opportunities to play has become harder. I support FC Barcelona. One of my dreams is to watch Barça play a Champions League match at Camp Nou.`

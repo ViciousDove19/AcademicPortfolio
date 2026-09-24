@@ -1,7 +1,6 @@
 'use client'
 import { Magnetic } from '@/components/ui/magnetic'
 import { TextLoop } from '@/components/ui/text-loop'
-import { ThemeSwitch } from '@/components/theme-switch'
 import { EMAIL, SOCIAL_LINKS } from './data'
 
 function MagneticSocialLink({
@@ -60,16 +59,13 @@ export function Footer() {
           ))}
         </div>
       </div>
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex items-center pt-2">
         <a href="https://github.com/ibelick/nim" target="_blank">
           <TextLoop className="font-mono text-xs text-ink-faint">
             <span>© {new Date().getFullYear()} Chinmay Raut.</span>
             <span>Research Scientist</span>
           </TextLoop>
         </a>
-        <div className="text-xs text-ink-faint">
-          <ThemeSwitch />
-        </div>
       </div>
     </footer>
   )

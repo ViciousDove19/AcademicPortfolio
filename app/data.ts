@@ -85,7 +85,7 @@ export const RESEARCH: ResearchProject[] = [
       'How can we build an agentic AI system that recommends biopsy when clinical evidence is incomplete or conflicting?',
     description:
       'We translate a clinical guideline into an executable policy graph. Each node poses a focused clinical question. Specialist agents evaluate the available evidence to answer these questions. An orchestrator traverses the graph and coordinates the agents to reach a decision. Every step produces an auditable trace. This trace shows which variables influenced the decision and how confident the system was.',
-    status: 'MICCAI 2026 Challenge submission',
+    status: 'Accepted, MICCAI 2026 Workshop',
     links: [{ label: 'Code', href: 'https://github.com/ViciousDove19/chimera-baseline' }],
   },
   {
@@ -141,7 +141,7 @@ export const RESEARCH: ResearchProject[] = [
       'Can we build fair models without erasing meaningful biological differences between populations?',
     description:
       'Many domain generalisation methods remove signals that predict cohort membership. However, some differences between cohorts may reflect meaningful biological variation rather than acquisition artefacts. Our radiomics analysis found that most cohort-level differences were concentrated in the wavelet domain rather than the raw image. WAAU-Net acts on this finding by decomposing each image into frequency subbands. It learns how strongly each subband should be normalised. A population discriminator encourages generalisation across cohorts while the selective normalisation preserves useful information.',
-    status: 'Preprint submitted, Biomedical Signal Processing and Control',
+    status: 'Under review, Biomedical Signal Processing and Control',
     links: [
       {
         label: 'Manuscript',

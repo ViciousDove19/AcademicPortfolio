@@ -31,7 +31,9 @@ export function Header() {
       </div>
       <div className="flex items-center justify-between gap-3">
         <NavMenu />
-        <ThemeSwitch />
+        <div className="flex items-center">
+          <ThemeSwitch />
+        </div>
       </div>
     </header>
   )

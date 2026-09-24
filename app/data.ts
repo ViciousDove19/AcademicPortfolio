@@ -255,12 +255,12 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     link: 'https://niravatgit.github.io/INSPIRELab/',
     id: 'work3',
     highlights: [
-      'Developed tools and algorithms for planning needle trajectories for minimally invasive neurosurgeries.',
-      'Implemented and trained a UNet-based network architecture in PyTorch for tumour segmentation on a publicly available dataset from the BraTS challenge.',
-      'Utilised FastSurferCNN for cortical parcellation and MRA data for blood-vessel identification to generate the environment for reinforcement learning.',
-      'Developed Flexible Needle Path Generation, a reinforcement-learning framework that produced 15% safer and 10% smoother curves than traditional path-finding algorithms like RRT*.',
-      'Developed a virtual reality pipeline using Slicer 3D software and an Aruco marker as an input device to plan linear surgical trajectories.',
-      'Used the Unity 3D game engine to simulate environments with different lighting to generate training images for a CNN model that minimised registration error, used in a demo augmented reality app built on the Vuforia engine.',
+      'Worked on developing tools and algorithms for planning needle trajectories for minimally invasive neurosurgeries.',
+      'Implemented and trained a UNet-based network architecture using Pytorch for tumour segmentation using a publicly available dataset from the BraTS challenge.',
+      'Utilised FastsurferCNN for cortical parcellation and MRA data for blood vessel identification to generate the environment for reinforcement learning.',
+      'Developed a reinforcement learning framework called Flexible Needle Path Generation, which generated 15% safer and 10% smoother curves compared to traditional path-finding algorithms like RRT*.',
+      'Developed a virtual reality pipeline using Slicer 3D software and an Aruco marker as an input device tool to plan linear surgical trajectories.',
+      'Used Unity 3D game engine to simulate environments with different lighting to generate images to train a CNN model to minimise registration error, which was utilised for a demo augmented reality app using the Vuforia engine.',
     ],
   },
   {
@@ -282,13 +282,14 @@ export const EDUCATION: Education[] = [
   {
     id: 'edu-iitm',
     institution: 'Indian Institute of Technology Madras',
-    degree: 'Dual Degree — B.Tech in Engineering Design & M.Tech in Biomedical Design',
+    degree: 'Dual Degree Programme - B.Tech in Engineering Design & M.Tech in Biomedical Design',
     location: 'Chennai, India',
     start: 'Jul 2018',
     end: 'May 2023',
     details: [
-      'CGPA: 8.91/10 — graduated in the top 5% of the class',
-      'Relevant coursework: Applied Statistics, Mathematical Foundations of Data Science, Life Sciences, Human Anatomy, Physiology & Biomechanics, Medical Image Analysis, Signals and Systems, Digital Signal Processing, Design of Monitoring and Diagnostic Systems',
+      'CGPA: 8.91/10',
+      'Graduated in the top 5% of the class',
+      'Relevant coursework: Applied Statistics, Mathematical Foundations of Data Science, Life Sciences, Human Anatomy, Physiology & Biomechanics, Medical Image Analysis, Signals and Systems, Digital Signal Processing, Design of Monitoring and Diagnostic Systems.',
     ],
   },
 ]
@@ -341,7 +342,7 @@ export const TECHNICAL_SKILLS: { label: string; items: string[] }[] = [
 export const NAV_LINKS: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Research', href: '/research' },
-  { label: 'Experience', href: '/experience' },
+  { label: 'CV', href: '/experience' },
   { label: 'About', href: '/about' },
 ]
 

@@ -50,8 +50,8 @@
   --color-paper-alt: #211c13;
   --color-paper-deep: #2a2318;
   --color-ink: #efe8d6;
-  --color-ink-soft: #b6ac8e;
-  --color-ink-faint: #7c745c;
+  --color-ink-soft: #c3b99a;
+  --color-ink-faint: #978d70;
   --color-rule: #3a3222;
   --color-accent: #e2703c;
   --color-accent-soft: #f0a874;
@@ -64,7 +64,7 @@
         to bottom,
         transparent,
         transparent 27px,
-        var(--color-rule) 28px
+        color-mix(in srgb, var(--color-rule) 55%, transparent) 28px
       );
     background-attachment: local;
   }

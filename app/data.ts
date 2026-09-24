@@ -45,6 +45,26 @@ type Publication = {
   link?: string
 }
 
+type Education = {
+  id: string
+  institution: string
+  degree: string
+  location: string
+  start: string
+  end: string
+  details: string[]
+}
+
+type Position = {
+  id: string
+  title: string
+  org: string
+  link?: string
+  start: string
+  end: string
+  highlights: string[]
+}
+
 export const HERO_TITLE =
   'Project Research Scientist · Health Informatics and Imaging Lab, IIT Madras'
 
@@ -78,6 +98,12 @@ export const RESEARCH: ResearchProject[] = [
     description:
       'Predicting axillary lymph node metastasis is difficult because labelled datasets are small. Prior research suggests that the tissue surrounding a tumour or lymph node contains signals associated with metastasis. We use this biological insight to design a pretraining objective for breast ultrasound. A ViT-B model learns to predict the Sobel edge response within masked peritumoral regions. The resulting encoder outperforms state-of-the-art methods for predicting metastasis on small datasets.',
     status: 'Under review, IEEE JBHI',
+    links: [
+      {
+        label: 'Manuscript',
+        href: 'https://drive.google.com/file/d/1uA4wO42cmVO_O1MPjc-dfPNupsrszNDH/view?usp=sharing',
+      },
+    ],
   },
   {
     id: 'research-tiny-vit-distillation',
@@ -98,7 +124,13 @@ export const RESEARCH: ResearchProject[] = [
     question: 'Can a transformer segment tumours without a decoder?',
     description:
       'Most segmentation models pair an encoder with a dedicated decoder. We replace the decoder with a single linear head applied directly to the ViT’s patch tokens. The head predicts the fraction of tumour area within each patch instead of assigning a binary label. With this design, a tiny ViT can localise tumours while achieving performance comparable to a ViT-B model with a decoder.',
-    status: 'Paper scaffold, in preparation',
+    status: 'Under review, Journal of Imaging Informatics in Medicine',
+    links: [
+      {
+        label: 'Manuscript',
+        href: 'https://drive.google.com/file/d/1J4gtFzo6HZVDxOXNqFhGjUKemOuvhJnC/view?usp=sharing',
+      },
+    ],
   },
   {
     id: 'research-waau-net',
@@ -110,6 +142,12 @@ export const RESEARCH: ResearchProject[] = [
     description:
       'Many domain generalisation methods remove signals that predict cohort membership. However, some differences between cohorts may reflect meaningful biological variation rather than acquisition artefacts. Our radiomics analysis found that most cohort-level differences were concentrated in the wavelet domain rather than the raw image. WAAU-Net acts on this finding by decomposing each image into frequency subbands. It learns how strongly each subband should be normalised. A population discriminator encourages generalisation across cohorts while the selective normalisation preserves useful information.',
     status: 'Preprint submitted, Biomedical Signal Processing and Control',
+    links: [
+      {
+        label: 'Manuscript',
+        href: 'https://drive.google.com/file/d/1muuNvQmDt99Kb_faXOygx6TR9FsYYZiz/view?usp=sharing',
+      },
+    ],
   },
 ]
 
@@ -122,6 +160,7 @@ export const PUBLICATIONS: Publication[] = [
     venue: 'IEEE Journal of Biomedical and Health Informatics',
     year: '2026',
     status: 'under-review',
+    link: 'https://drive.google.com/file/d/1uA4wO42cmVO_O1MPjc-dfPNupsrszNDH/view?usp=sharing',
   },
   {
     id: 'pub-waau-net',
@@ -130,6 +169,7 @@ export const PUBLICATIONS: Publication[] = [
     venue: 'Biomedical Signal Processing and Control',
     year: '2026',
     status: 'under-review',
+    link: 'https://drive.google.com/file/d/1muuNvQmDt99Kb_faXOygx6TR9FsYYZiz/view?usp=sharing',
   },
   {
     id: 'pub-tiny-vit-distillation',
@@ -141,8 +181,10 @@ export const PUBLICATIONS: Publication[] = [
   {
     id: 'pub-decoder-free-segmentation',
     title: 'A Decoder-Free Soft-Token Segmenter for Point-of-Care Breast Ultrasound',
-    venue: 'Target venue not yet finalized',
-    status: 'in-preparation',
+    venue: 'Journal of Imaging Informatics in Medicine',
+    year: '2026',
+    status: 'under-review',
+    link: 'https://drive.google.com/file/d/1J4gtFzo6HZVDxOXNqFhGjUKemOuvhJnC/view?usp=sharing',
   },
   {
     id: 'pub-iceccme',
@@ -206,18 +248,94 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     ],
   },
   {
+    company: 'iNSPIRE Lab, IIT Madras',
+    title: 'Undergraduate Researcher',
+    start: 'May 2021',
+    end: 'May 2023',
+    link: 'https://niravatgit.github.io/INSPIRELab/',
+    id: 'work3',
+    highlights: [
+      'Developed tools and algorithms for planning needle trajectories for minimally invasive neurosurgeries.',
+      'Implemented and trained a UNet-based network architecture in PyTorch for tumour segmentation on a publicly available dataset from the BraTS challenge.',
+      'Utilised FastSurferCNN for cortical parcellation and MRA data for blood-vessel identification to generate the environment for reinforcement learning.',
+      'Developed Flexible Needle Path Generation, a reinforcement-learning framework that produced 15% safer and 10% smoother curves than traditional path-finding algorithms like RRT*.',
+      'Developed a virtual reality pipeline using Slicer 3D software and an Aruco marker as an input device to plan linear surgical trajectories.',
+      'Used the Unity 3D game engine to simulate environments with different lighting to generate training images for a CNN model that minimised registration error, used in a demo augmented reality app built on the Vuforia engine.',
+    ],
+  },
+  {
     company: 'Samsung Research Institute Bangalore',
     title: 'Research Intern',
     start: 'Dec 2021',
     end: 'May 2022',
     link: 'https://research.samsung.com/sri-b',
-    id: 'work3',
+    id: 'work4',
     highlights: [
       "Developed a CNN model 'LiteAR' for dynamically estimating illumination for mixed reality applications using spherical harmonics for A and M series Samsung smartphones.",
       'Developed an augmented reality app by incorporating LiteAR into the open-source rendering engine Filament.',
       "Worked on Samsung's proprietary Neural Radiance Fields (NeRF) model utilising inverse rendering to generate 3D views from a few 2D images.",
     ],
   },
+]
+
+export const EDUCATION: Education[] = [
+  {
+    id: 'edu-iitm',
+    institution: 'Indian Institute of Technology Madras',
+    degree: 'Dual Degree — B.Tech in Engineering Design & M.Tech in Biomedical Design',
+    location: 'Chennai, India',
+    start: 'Jul 2018',
+    end: 'May 2023',
+    details: [
+      'CGPA: 8.91/10 — graduated in the top 5% of the class',
+      'Relevant coursework: Applied Statistics, Mathematical Foundations of Data Science, Life Sciences, Human Anatomy, Physiology & Biomechanics, Medical Image Analysis, Signals and Systems, Digital Signal Processing, Design of Monitoring and Diagnostic Systems',
+    ],
+  },
+]
+
+export const POSITIONS: Position[] = [
+  {
+    id: 'pos-ta',
+    title: 'Teaching Assistant',
+    org: 'Data Science: Theory & Practice, Introduction to Computation & Visualization',
+    start: 'Aug 2022',
+    end: 'May 2023',
+    highlights: [
+      'Taught Python for data science and C for computation and graphics visualisation in the laboratory sessions for both courses.',
+      'Evaluated assignments and code submissions for 60+ students.',
+    ],
+  },
+  {
+    id: 'pos-nirmaan',
+    title: 'Project Management Head',
+    org: 'Nirmaan, IIT Madras',
+    link: 'https://nirmaan.iitm.ac.in/',
+    start: 'Sep 2020',
+    end: 'Jun 2021',
+    highlights: [
+      'Led a team of 10 and managed pre-seed funding, legal support, and talent acquisition for 40+ student startups.',
+      'Conducted project reviews that helped 15+ teams develop an MVP.',
+    ],
+  },
+  {
+    id: 'pos-nss',
+    title: 'Teaching Resource for Underprivileged Children',
+    org: 'National Service Scheme, IIT Madras',
+    start: 'Sep 2018',
+    end: 'May 2019',
+    highlights: [
+      'Taught mathematics and science to children from underprivileged communities in Chennai.',
+    ],
+  },
+]
+
+export const TECHNICAL_SKILLS: { label: string; items: string[] }[] = [
+  { label: 'Languages', items: ['Python', 'SQL', 'C/C++', 'JavaScript', 'HTML/CSS'] },
+  {
+    label: 'Frameworks',
+    items: ['PyTorch', 'PySpark', 'Flask', 'Streamlit', 'LangChain', 'LangGraph'],
+  },
+  { label: 'Developer Tools', items: ['Git', 'Docker'] },
 ]
 
 export const NAV_LINKS: NavLink[] = [

@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { HERO_TITLE } from './data'
 import { Avatar } from './avatar'
 import { NavMenu } from './nav-menu'
+import { ThemeSwitch } from '@/components/theme-switch'
 
 export function Header() {
   return (
-    <header className="mb-10 flex items-center justify-between border-b border-rule pb-4">
+    <header className="mb-10 flex flex-col gap-4 border-b border-rule pb-4">
       <div className="flex items-center gap-3">
         <Avatar />
         <div>
@@ -28,7 +29,10 @@ export function Header() {
           </TextEffect>
         </div>
       </div>
-      <NavMenu />
+      <div className="flex items-center justify-between gap-3">
+        <NavMenu />
+        <ThemeSwitch />
+      </div>
     </header>
   )
 }

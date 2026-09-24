@@ -375,6 +375,30 @@ export function SketchScooter() {
   )
 }
 
+export function SketchNeedlePath() {
+  return (
+    <SketchFrame label="Sketch: a curved needle trajectory threading around an obstacle toward a target">
+      <g className="stroke-ink-faint" strokeWidth="1.25" fill="none">
+        <ellipse cx="60" cy="42" rx="34" ry="26" />
+        <circle cx="46" cy="38" r="7" />
+      </g>
+      <path
+        d="M20 60 C 36 50, 44 30, 62 34 S 92 44, 96 26"
+        className="stroke-accent"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+        strokeDasharray="1 5"
+      />
+      <circle cx="20" cy="60" r="2.5" className="fill-ink-faint" />
+      <circle cx="96" cy="26" r="3" className="fill-accent/20 stroke-accent" strokeWidth="1.25" />
+      <text x="14" y="78" className="fill-ink-soft font-mono" fontSize="6">
+        RRT* path planning
+      </text>
+    </SketchFrame>
+  )
+}
+
 export function SketchARHeadset() {
   return (
     <SketchFrame label="Sketch: an augmented-reality headset with a rendered light cone">

@@ -15,6 +15,7 @@ import {
   SketchSoftToken,
   SketchLabBench,
   SketchScooter,
+  SketchNeedlePath,
   SketchARHeadset,
 } from '@/components/notebook/sketches'
 import {
@@ -37,7 +38,8 @@ const SKETCHES: Record<string, React.ComponentType> = {
 const JOB_SKETCHES: Record<string, React.ComponentType> = {
   work1: SketchLabBench,
   work2: SketchScooter,
-  work3: SketchARHeadset,
+  work3: SketchNeedlePath,
+  work4: SketchARHeadset,
 }
 
 const VARIANTS_CONTAINER = {

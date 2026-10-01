@@ -22,6 +22,7 @@ import {
   BIO,
   RESEARCH,
   PUBLICATIONS,
+  AWARDS,
   SERVICE,
   WORK_EXPERIENCE,
   EMAIL,
@@ -232,6 +233,18 @@ export default function Personal() {
               </div>
             )
           })}
+          <div className="space-y-2">
+            <h3 className="px-1 font-mono text-xs uppercase tracking-wide text-ink-faint">
+              Awards
+            </h3>
+            <ul className="space-y-2 px-1">
+              {AWARDS.map((item) => (
+                <li key={item} className="text-sm text-ink-soft">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className="space-y-2">
             <h3 className="px-1 font-mono text-xs uppercase tracking-wide text-ink-faint">
               Service

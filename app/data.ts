@@ -85,7 +85,7 @@ export const RESEARCH: ResearchProject[] = [
       'How can we build an agentic AI system that recommends biopsy when clinical evidence is incomplete or conflicting?',
     description:
       'We translate a clinical guideline into an executable policy graph. Each node poses a focused clinical question. Specialist agents evaluate the available evidence to answer these questions. An orchestrator traverses the graph and coordinates the agents to reach a decision. Every step produces an auditable trace. This trace shows which variables influenced the decision and how confident the system was.',
-    status: 'Accepted, MICCAI 2026 Workshop',
+    status: '2nd Place, MICCAI 2026 CHIMERA-Agent Challenge',
     links: [{ label: 'Code', href: 'https://github.com/ViciousDove19/chimera-baseline' }],
   },
   {
@@ -214,6 +214,8 @@ export const PUBLICATIONS: Publication[] = [
   },
 ]
 
+export const AWARDS = ['2nd Place, MICCAI 2026 CHIMERA-Agent Challenge (Agentic AI)']
+
 export const SERVICE = ['Reviewer: MICCAI, International Journal of Biomedical Imaging']
 
 export const WORK_EXPERIENCE: WorkExperience[] = [
@@ -227,7 +229,7 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     highlights: [
       'Developed PS-MAE for an ICMR-funded breast cancer research. Designed its masked-pretraining objective using clinical evidence that peritumoral tissue contains metastasis-related signals. The encoder outperformed state-of-the-art methods under linear probing and on a class-imbalanced external cohort. First-author manuscript under review at IEEE JBHI.',
       'JEPA-distilled USFMAE into a TinyViT and added an auxiliary radiomics-prediction objective to capture information beyond the teacher embeddings. The 15× smaller encoder outperformed state-of-the-art classification models, retained performance on an external dataset, and performed best under linear probing, demonstrating inherently separable representations. Coordinated with clinicians to adapt the system for on-site deployment.',
-      'Built an agentic system for the MICCAI 2026 CHIMERA Challenge that combined histopathology, clinical, and molecular evidence for prostate-cancer risk assessment. The system reported its confidence, influential variables, and policy trace, making each decision auditable.',
+      'Built an agentic system for the MICCAI 2026 CHIMERA Challenge, awarded 2nd place, that combined histopathology, clinical, and molecular evidence for prostate-cancer risk assessment. The system reported its confidence, influential variables, and policy trace, making each decision auditable.',
       'Evaluated breast-ultrasound segmentation across Indian, Polish, and Egyptian cohorts, identifying performance gaps caused by acquisition differences and population-linked morphology. Developed adaptive wavelet normalization to reduce this cross-cohort gap. Manuscript under review at BSPC.',
       "Mentored undergraduate and MS students, conducted tutorials on vision transformers, LLMs, Linux, and remote computing, and administered the lab's GPU infrastructure, including user access, storage, software environments, drivers, and GitHub repositories.",
     ],
